@@ -1,0 +1,177 @@
+.field-wrapper {
+  position: relative;
+  margin-bottom: -15px;
+}
+label {
+    left: 0;
+    font-size: 11px;
+    color: #aaa;
+    transition: all 0.1s linear;
+    opacity: 0;
+    font-weight:bold;
+}
+label.on {
+    /*color: #4481C4;*/
+    color: #3e8e41;
+}
+label.show {
+    opacity: 1;
+}
+option{
+    color: black;
+  }
+.watermark{
+  color: #aaa;
+}
+body {
+    /* the following line fixes a blink in chrome https://code.google.com/p/chromium/issues/detail?id=108025 */
+    -webkit-backface-visibility: hidden;
+}
+
+.button, .add {
+  display: inline-block;
+  padding: 5px 13px;
+  font-size: 15px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 4px #999;
+  float:center;
+}
+.cut {
+  display: inline-block;
+  padding: 4px 10px;
+  font-size: 13px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #bc3232;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 2px #999;
+  float:center;
+  width: 100%;
+}
+
+.button:hover, .add:hover {background-color: #3e8e41;
+  color: #fff;
+}
+
+.cut:hover {background-color: #7c0101;
+  color: #fff;
+}
+
+.button:active, .add:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+  color: #fff;
+}
+.cut:active {
+  background-color: #9b0c0c;
+  box-shadow: 0 3px #666;
+  transform: translateY(2px);
+  color: #fff;
+}
+.custom-file-upload-hidden {
+  display: none;
+  visibility: hidden;
+  position: absolute;
+  left: -9999px;
+}
+.custom-file-upload {
+  display: block;
+  width: auto;
+  font-size: 16px;
+  margin-top: 30px;
+  //border: 1px solid #ccc;
+  label {
+    display: block;
+    margin-bottom: 5px;
+  }
+}
+
+.container1{ height:100px; }
+
+
+
+/* content editable */
+
+*[contenteditable] { border-radius: 0.25em; min-width: 1em; outline: 0; }
+
+*[contenteditable] { cursor: pointer; }
+
+*[contenteditable]:hover, *[contenteditable]:focus, td:hover *[contenteditable], td:focus *[contenteditable], img.hover { background: #DEF; box-shadow: 0 0 1em 0.5em #DEF; }
+
+span[contenteditable] { display: inline-block; }
+
+
+/* article */
+
+article, article address, table.meta, table.bill { margin: 0 0 3em; }
+article:after { clear: both; content: ""; display: table; }
+article h1 { clip: rect(0 0 0 0); position: absolute; }
+
+article address { float: left; font-size: 125%; font-weight: bold; }
+
+/* table meta & balance */
+
+table.meta, table.balance { float: right; width: 36%; }
+table.meta:after, table.balance:after { clear: both; content: ""; display: table; }
+
+/* table meta */
+
+table.meta th { width: 40%; }
+table.meta td { width: 60%; }
+
+/* table items */
+
+table.bill { clear: both; width: 100%; }
+table.bill th { font-weight: bold; text-align: center; }
+
+table.bill td:nth-child(1) { text-align: center; width: 26%; }
+table.bill td:nth-child(2) { text-align: center; width: 38%; }
+table.bill td:nth-child(3) { text-align: left; width: 12%; }
+table.bill td:nth-child(4) { width: 12%; }
+table.bill td:nth-child(5) { text-align: right; width: 12%; }
+table.bill td:nth-child(6) { text-align: right; width: 12%; }
+table.bill td:nth-child(7) { text-align: right; width: 12%; }
+
+/* table balance */
+
+table.balance th, table.balance td { width: 50%; }
+table.balance td { text-align: right; }
+
+/* aside */
+
+aside h1 { border: none; border-width: 0 0 1px; margin: 0 0 1em; }
+aside h1 { border-color: #999; border-bottom-style: solid; }
+
+
+/*input color*/
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:focus,
+input[type="date"]:focus,
+input[type="month"]:focus,
+input[type="time"]:focus,
+input[type="week"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="color"]:focus,
+.uneditable-input:focus {   
+  border-color: rgba(111, 41, 250, 1);
+  box-shadow: 0 1px 1px rgba(63, 15, 159, 1) inset, 0 0 8px rgba(126, 239, 104, 0.6);
+  outline: 0 none;
+}
