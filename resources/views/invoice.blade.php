@@ -1,4 +1,4 @@
-﻿@extends('layouts.dashboardAM') 
+@extends('layouts.dashboardAM') 
 @section('page_title','Invoice') 
 @section('page_content')
 
@@ -122,9 +122,9 @@
                 <input type="hidden" id="invoice_no" name="invoice_no" value="INVC<?php echo time(); ?>">
                 <input type="hidden" id="invoice_due" name="invoice_due" value="<?php echo date("Y-m-d", (strtotime($invoicedue))) ?>">
                 @if($terno > 0 && $proj->proj_percentage == 100)
-                <input type="text" id="invoice_amount" name="invoice_amount" value="<?php  $number = ($expense * (($proj->proj_percentage - $invoiceper) * .01)) + $req_amount; echo number_format ( $number , "2" , ".", "" )?>">
+                <input type="text" id="invoice_amount" style="display:none" name="invoice_amount" value="<?php  $number = ($expense * (($proj->proj_percentage - $invoiceper) * .01)) + $req_amount; echo number_format ( $number , "2" , ".", "" )?>">
                 @else
-                <input type="text" id="invoice_amount" name="invoice_amount" value="<?php  $number = $expense * (($proj->proj_percentage - $invoiceper) * .01); echo number_format ( $number , "2" , ".", "" )?>">
+                <input type="text" id="invoice_amount" style="display:none" name="invoice_amount" value="<?php  $number = $expense * (($proj->proj_percentage - $invoiceper) * .01); echo number_format ( $number , "2" , ".", "" )?>">
                 @endif
                 <button type="submit" class="btn btn-success "><i class="fa fa-credit-card"></i> Submit and Generate Invoice</button>
               </div>
