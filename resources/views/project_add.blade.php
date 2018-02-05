@@ -1,7 +1,6 @@
 @extends('layouts.dashboardAM') 
 @section('page_title','Project Add') 
 @section('page_content')
-
 <div class="">
   <div class="clearfix"></div>
   <div class="row">
@@ -14,6 +13,8 @@
         <div class="x_content">
           <form method="post" action="/addproject" id="project_form" data-parsley-validate="">
             {{ csrf_field() }}
+
+            <h2><span style="color:red;">NOTE: ALL FIELDS ARE REQUIRED</span></h2><br/>
 
             <h2 class="StepTitle" style="text-align:center; ">Company Information</h2>
             <p><span style="font-weight: bold">Instruction:</span> Select Company Name and if its not yet on the record, select others and fill up the form.</p>
@@ -240,7 +241,7 @@
                   <a  data-toggle="modal" data-target="#addEquipment"><button type="button" class="button" ><i class="fa fa-plus"></i> &nbsp Add Equipment</button></a>
                 </div>
               </div>
-              <button type="submit" class="btn btn-success" id="submit" style="width:100%">Submit</button>
+              <button type="submit" class="btn btn-success" id="submit" style="margin-top:10%;width:100%">Submit</button>
             </div>
           </form>
         </div>

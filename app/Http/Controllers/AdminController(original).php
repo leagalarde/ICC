@@ -677,330 +677,334 @@ class AdminController extends Controller
       }else{
         $inspect_date = $_POST['inspection-date'];
         $inspect_end = $_POST['inspection-until'];
-            }//if else
-            DB::table('equipment_info_tbl')->insert([
-              'ec_id' => $_POST['product-name'],
-              'ei_manufacturer' => $_POST['brand'],
-              'ei_serial_model_plate' => $_POST['model'],
-              'ei_status' => 'Available',
-              'ei_capacity_qty' => $_POST['quantity'],
-              'ei_capacity_unit' => $_POST['capacity'],
-              'ei_inspection_date' => $inspect_date,
-              'ei_inspection_valid_until' => $inspect_end,
-            ]);
-            DB::table('equipment_category')
-            ->where('ec_id',$_POST['product-name'])->update([
-              'ec_quantity' => DB::raw('ec_quantity+1')
-            ]);
-            return redirect('/equipment_add');
-          }
-          public function getEquipmentInfo(Request $req){
-            $type = DB::table('equipment_info_tbl')->where('ei_id',$req->id)->get();
-            return response()->json($type);
-          }
-          public function editEquipmentInfo(){
-            $this->validate(request(),[
-              'product-name' => 'required',
-              'brand' => 'required',
-              'model' => 'required',
-              'status' => 'required',
-              'quantity' => 'required',
-              'capacity' => 'required'
-            ]);
-            if($_POST['inspection-date'] == '' || $_POST['inspection-until'] == ''){
-              $inspect_date = '1111-11-11';
-              $inspect_end = '1111-11-11';
-            }else{
-              $inspect_date = $_POST['inspection-date'];
-              $inspect_end = $_POST['inspection-until'];
-            }
-            DB::table('equipment_info_tbl')->where('ei_id',$_POST['id'])->update([
-              'ec_id' => $_POST['product-name'],
-              'ei_manufacturer' => $_POST['brand'],
-              'ei_serial_model_plate' => $_POST['model'],
-              'ei_status' => $_POST['status'],
-              'ei_capacity_qty' => $_POST['quantity'],
-              'ei_capacity_unit' => $_POST['capacity'],
-              'ei_inspection_date' => $inspect_date,
-              'ei_inspection_valid_until' => $inspect_end,
-            ]);
-            return redirect('/equipment_add');
-          }
-          public function deleteEquipmentInfo(){
-            $qty = DB::table('equipment_category as ec')
-            ->join('equipment_info_tbl as ei','ei.ec_id','=','ec.ec_id')
-            ->where('ei_id',$_POST['id'])->get();
-            foreach($qty as $qty){
-              $id=$qty->ec_id;
-          }//foreach
-          DB::table('equipment_info_tbl')->where('ei_id',$_POST['id'])-> delete();
-          DB::table('equipment_category')
-          ->where('ec_id',$id)->update([
-            'ec_quantity' => DB::raw('ec_quantity-1')
-          ]);
-          return redirect('/equipment_add');
-        }//deleteequipmentinfo
-        public function EquipmentDep(){
-          $id = session('id');
-          $var = DB::select('SELECT count(CASE WHEN ei_status = "Deployed" Then 1 END) as "Deployed",
-            count(CASE WHEN ei_status = "Maintenace" Then 1 END) as "Maintenance",
-            count(CASE WHEN ei_status = "Defective" Then 1 END) as "Defective", pr.proj_no, pi_title
-            FROM `equipment_info_tbl` as ei
-            JOIN `equipment_deployed_tbl` as ed ON ed.ei_id = ei.ei_id
-            JOIN `project_tbl` as pr ON pr.proj_no = ed.proj_no
-            JOIN `project_info_tbl` as pi ON pi.proj_no = pr.proj_no
-            WHERE deleted = 0
-            Group By pr.proj_no,pi_title');
+      }//if else
+      DB::table('equipment_info_tbl')->insert([
+        'ec_id' => $_POST['product-name'],
+        'ei_manufacturer' => $_POST['brand'],
+        'ei_serial_model_plate' => $_POST['model'],
+        'ei_status' => 'Available',
+        'ei_capacity_qty' => $_POST['quantity'],
+        'ei_capacity_unit' => $_POST['capacity'],
+        'ei_inspection_date' => $inspect_date,
+        'ei_inspection_valid_until' => $inspect_end,
+      ]);
+      DB::table('equipment_category')
+      ->where('ec_id',$_POST['product-name'])->update([
+        'ec_quantity' => DB::raw('ec_quantity+1')
+      ]);
+      return redirect('/equipment_add');
+    }
+    public function getEquipmentInfo(Request $req){
+      $type = DB::table('equipment_info_tbl')->where('ei_id',$req->id)->get();
+      return response()->json($type);
+    }
+    public function editEquipmentInfo(){
+      $this->validate(request(),[
+        'product-name' => 'required',
+        'brand' => 'required',
+        'model' => 'required',
+        'status' => 'required',
+        'quantity' => 'required',
+        'capacity' => 'required'
+      ]);
+      if($_POST['inspection-date'] == '' || $_POST['inspection-until'] == ''){
+        $inspect_date = '1111-11-11';
+        $inspect_end = '1111-11-11';
+      }else{
+        $inspect_date = $_POST['inspection-date'];
+        $inspect_end = $_POST['inspection-until'];
+      }
+      DB::table('equipment_info_tbl')->where('ei_id',$_POST['id'])->update([
+        'ec_id' => $_POST['product-name'],
+        'ei_manufacturer' => $_POST['brand'],
+        'ei_serial_model_plate' => $_POST['model'],
+        'ei_status' => $_POST['status'],
+        'ei_capacity_qty' => $_POST['quantity'],
+        'ei_capacity_unit' => $_POST['capacity'],
+        'ei_inspection_date' => $inspect_date,
+        'ei_inspection_valid_until' => $inspect_end,
+      ]);
+      return redirect('/equipment_add');
+    }
+    public function deleteEquipmentInfo(){
+      $qty = DB::table('equipment_category as ec')
+      ->join('equipment_info_tbl as ei','ei.ec_id','=','ec.ec_id')
+      ->where('ei_id',$_POST['id'])->get();
+      foreach($qty as $qty){
+        $id=$qty->ec_id;
+      }//foreach
+      DB::table('equipment_info_tbl')->where('ei_id',$_POST['id'])-> delete();
+      DB::table('equipment_category')
+      ->where('ec_id',$id)->update([
+        'ec_quantity' => DB::raw('ec_quantity-1')
+      ]);
+      return redirect('/equipment_add');
+    }//deleteequipmentinfo
+    public function EquipmentDep(){
+      $id = session('id');
+      $var = DB::select('SELECT count(CASE WHEN ei_status = "Deployed" Then 1 END) as "Deployed",
+        count(CASE WHEN ei_status = "Maintenace" Then 1 END) as "Maintenance",
+        count(CASE WHEN ei_status = "Defective" Then 1 END) as "Defective", pr.proj_no, pi_title
+        FROM `equipment_info_tbl` as ei
+        JOIN `equipment_deployed_tbl` as ed ON ed.ei_id = ei.ei_id
+        JOIN `project_tbl` as pr ON pr.proj_no = ed.proj_no
+        JOIN `project_info_tbl` as pi ON pi.proj_no = pr.proj_no
+        WHERE deleted = 0
+        Group By pr.proj_no,pi_title');
 
-          $empPic = DB::table('employee_tbl')->where('emp_id',$id)->get();
+      $empPic = DB::table('employee_tbl')->where('emp_id',$id)->get();
 
           //notification
-          $notif = DB::table('notification_tbl as notif')
-          ->join('employee_tbl as emp','emp.emp_id','=','notif.notif_from')
-          ->where('notif.notif_description', 'not like', '%added a project to you%')
-          ->orderBy('notif.notif_date', 'desc')
-          ->take(5)->get();
+      $notif = DB::table('notification_tbl as notif')
+      ->join('employee_tbl as emp','emp.emp_id','=','notif.notif_from')
+      ->where('notif.notif_description', 'not like', '%added a project to you%')
+      ->orderBy('notif.notif_date', 'desc')
+      ->take(5)->get();
 
-          $notifcount = DB::table('notification_tbl as notif')
-          ->join('employee_tbl as emp','emp.emp_id','=','notif.notif_to')
-          ->where('notif.notif_admin_status','unview')->count();
+      $notifcount = DB::table('notification_tbl as notif')
+      ->join('employee_tbl as emp','emp.emp_id','=','notif.notif_to')
+      ->where('notif.notif_admin_status','unview')->count();
 
-          return view('equipment_dep',['var'=>$var,'id' => $id, 'notif' => $notif, 'notifcount' => $notifcount, 'empPic'=>$empPic]);
-        }//equipment_dep
-        public function EquipmentDepView(){
-          $id = session('id');
-          $task = DB::table('project_tbl as pr')
-          ->join('project_info_tbl as pi','pi.proj_no','=','pr.proj_no')
-          ->join('contract_info_tbl','pr.ci_no','=','contract_info_tbl.ci_no')
-          ->join('contract_bill_tbl','contract_bill_tbl.cb_id','=','contract_info_tbl.cb_id')
-          ->join('project_task_tbl as pt','pr.proj_no','=','pt.proj_no')
-          ->join('task_tbl','task_tbl.task_id','=','pt.task_id')
-          ->where('pr.proj_no',$_GET['id'])->get();
+      return view('equipment_dep',['var'=>$var,'id' => $id, 'notif' => $notif, 'notifcount' => $notifcount, 'empPic'=>$empPic]);
+    }//equipment_dep
+    public function EquipmentDepView(){
+      $id = session('id');
+      $task = DB::table('project_tbl as pr')
+      ->join('project_info_tbl as pi','pi.proj_no','=','pr.proj_no')
+      ->join('contract_info_tbl','pr.ci_no','=','contract_info_tbl.ci_no')
+      ->join('contract_bill_tbl','contract_bill_tbl.cb_id','=','contract_info_tbl.cb_id')
+      ->join('project_task_tbl as pt','pr.proj_no','=','pt.proj_no')
+      ->join('task_tbl','task_tbl.task_id','=','pt.task_id')
+      ->where('pr.proj_no',$_GET['id'])->get();
 
-          $fin = DB::table('project_tbl as pr')
-          ->join('project_info_tbl as pi','pi.proj_no','=','pr.proj_no')
-          ->join('contract_info_tbl','pr.ci_no','=','contract_info_tbl.ci_no')
-          ->join('employee_tbl','pi.emp_id','=','employee_tbl.emp_id')
-          ->join('contract_bill_tbl','contract_bill_tbl.cb_id','=','contract_info_tbl.cb_id')
-          ->where('pr.proj_no',$_GET['id'])->get();
-          
-          $equipdep = DB::table('equipment_deployed_tbl as ed')->where('ed.proj_no',$_GET['id'])
-          ->join('equipment_info_tbl as ei','ei.ei_id','=','ed.ei_id')
-          ->join('equipment_category as ec','ec.ec_id','=','ei.ec_id')->get();
-          $equipreq = DB::table('equipment_deployed_tbl as ed')->where('ed.proj_no',$_GET['id'])
-          ->join('equipment_jobrequest_tbl as ejr','ejr.ed_id','=','ed.ed_id')
-          ->join('req_items_tbl as ri','ri.ejr_no','=','ejr.ejr_no')->get();
-          
-          
-          $empPic = DB::table('employee_tbl')->where('emp_id',$id)->get();
+      $fin = DB::table('project_tbl as pr')
+      ->join('project_info_tbl as pi','pi.proj_no','=','pr.proj_no')
+      ->join('contract_info_tbl','pr.ci_no','=','contract_info_tbl.ci_no')
+      ->join('employee_tbl','pi.emp_id','=','employee_tbl.emp_id')
+      ->join('contract_bill_tbl','contract_bill_tbl.cb_id','=','contract_info_tbl.cb_id')
+      ->where('pr.proj_no',$_GET['id'])->get();
+
+      $equipdep = DB::table('equipment_deployed_tbl as ed')->where('ed.proj_no',$_GET['id'])
+      ->join('equipment_info_tbl as ei','ei.ei_id','=','ed.ei_id')
+      ->join('equipment_category as ec','ec.ec_id','=','ei.ec_id')->get();
+      $equipreq = DB::table('equipment_deployed_tbl as ed')->where('ed.proj_no',$_GET['id'])
+      ->join('equipment_jobrequest_tbl as ejr','ejr.ed_id','=','ed.ed_id')
+      ->join('req_items_tbl as ri','ri.ejr_no','=','ejr.ejr_no')->get();
+
+
+      $empPic = DB::table('employee_tbl')->where('emp_id',$id)->get();
 
          //notification
-          $notif = DB::table('notification_tbl as notif')
-          ->join('employee_tbl as emp','emp.emp_id','=','notif.notif_from')
-          ->orderBy('notif.notif_date', 'desc')
-          ->take(5)->get();
+      $notif = DB::table('notification_tbl as notif')
+      ->join('employee_tbl as emp','emp.emp_id','=','notif.notif_from')
+      ->orderBy('notif.notif_date', 'desc')
+      ->take(5)->get();
 
-          $notifcount = DB::table('notification_tbl as notif')
-          ->join('employee_tbl as emp','emp.emp_id','=','notif.notif_to')
-          ->where('notif.notif_admin_status','unview')->count();
+      $notifcount = DB::table('notification_tbl as notif')
+      ->join('employee_tbl as emp','emp.emp_id','=','notif.notif_to')
+      ->where('notif.notif_admin_status','unview')->count();
 
-          return view('equipment_dep_detail',['id' => $id, 'notif' => $notif, 'notifcount' => $notifcount, 'fin' => $fin, 'equipdep'=>$equipdep, 'equipreq'=>$equipreq, 'task' => $task,'empPic'=>$empPic]);
-        }
-        public function ejrDetail(Request $req){
-          $type = DB::table('equipment_info_tbl as ei')
-          ->join('equipment_deployed_tbl as ed','ed.ei_id','=','ei.ei_id')
-          ->join('equipment_jobrequest_tbl as ejr','ejr.ed_id','=','ed.ed_id')
-          ->join('req_items_tbl as ri','ri.ejr_no','=','ejr.ejr_no')
-          ->join('equip_trial as et','et.ejr_no','=','ejr.ejr_no')
-          ->where('ejr.ejr_no',$req->id)->get();
-          return response()->json($type);
-        }
+      return view('equipment_dep_detail',['id' => $id, 'notif' => $notif, 'notifcount' => $notifcount, 'fin' => $fin, 'equipdep'=>$equipdep, 'equipreq'=>$equipreq, 'task' => $task,'empPic'=>$empPic]);
+    }
+    public function ejrDetail(Request $req){
+      $type = DB::table('equipment_info_tbl as ei')
+      ->join('equipment_deployed_tbl as ed','ed.ei_id','=','ei.ei_id')
+      ->join('equipment_jobrequest_tbl as ejr','ejr.ed_id','=','ed.ed_id')
+      ->join('req_items_tbl as ri','ri.ejr_no','=','ejr.ejr_no')
+      ->join('equip_trial as et','et.ejr_no','=','ejr.ejr_no')
+      ->where('ejr.ejr_no',$req->id)->get();
+      return response()->json($type);
+    }
 
 //***** PROJECT_ADD *****//
-        public function Projectadd(){
-          $id = session('id');
-          $promanager = DB::table('employee_tbl')->join('users','employee_tbl.emp_id','=','users.emp_id')->where([
-            ['emp_status', '=', '0'],
-            ['el_position', 'Project Manager'],
-          ])->get();
-          $plan = DB::table('task_tbl')
-          ->where('task_tbl.task_delete',0)
-          ->orderBy('phase_id')
-          ->orderBy('task_item_no')->get();
-          $equipcat = DB::table('equipment_category')->where('ec_quantity','>','0')->get();
-          $empPic = DB::table('employee_tbl')->where('emp_id',$id)->get();
+    public function Projectadd(){
+      $id = session('id');
+      $promanager = DB::table('employee_tbl')->join('users','employee_tbl.emp_id','=','users.emp_id')->where([
+        ['emp_status', '=', '0'],
+        ['el_position', 'Project Manager'],
+      ])->get();
+      $plan = DB::table('task_tbl')
+      ->where('task_tbl.task_delete',0)
+      ->orderBy('phase_id')
+      ->orderBy('task_item_no')->get();
+      $equipcat = DB::table('equipment_category')->where('ec_quantity','>','0')->get();
+      $empPic = DB::table('employee_tbl')->where('emp_id',$id)->get();
 
        //notification
-          $notif = DB::table('notification_tbl as notif')
-          ->join('employee_tbl as emp','emp.emp_id','=','notif.notif_from')
-          ->where('notif.notif_description', 'not like', '%added a project to you%')
-          ->orderBy('notif.notif_date', 'desc')
-          ->take(5)->get();
+      $notif = DB::table('notification_tbl as notif')
+      ->join('employee_tbl as emp','emp.emp_id','=','notif.notif_from')
+      ->where('notif.notif_description', 'not like', '%added a project to you%')
+      ->orderBy('notif.notif_date', 'desc')
+      ->take(5)->get();
 
-          $notifcount = DB::table('notification_tbl as notif')
-          ->join('employee_tbl as emp','emp.emp_id','=','notif.notif_to')
-          ->where('notif.notif_admin_status','unview')->count();
+      $notifcount = DB::table('notification_tbl as notif')
+      ->join('employee_tbl as emp','emp.emp_id','=','notif.notif_to')
+      ->where('notif.notif_admin_status','unview')->count();
 
-          $company = DB::table('client_tbl')
-          ->where('client_tbl.cl_delete',0)->get();
+      $company = DB::table('client_tbl')
+      ->where('client_tbl.cl_delete',0)->get();
 
-          $client = DB::table('client_rep_tbl')
-          ->where('cr_delete',0)->get();
+      $client = DB::table('client_rep_tbl')
+      ->where('cr_delete',0)->get();
 
-          return view('project_add',['id' => $id, 'notif' => $notif, 'notifcount' => $notifcount, 'promanager' => $promanager,'plan' => $plan,'equipcat' => $equipcat,'empPic'=>$empPic,'company'=>$company, 'client'=>$client]);
+      return view('project_add',['id' => $id, 'notif' => $notif, 'notifcount' => $notifcount, 'promanager' => $promanager,'plan' => $plan,'equipcat' => $equipcat,'empPic'=>$empPic,'company'=>$company, 'client'=>$client]);
 
       //return view('index',['id' => $id, 'notif' => $notif, 'notifcount' => $notifcount, 'promanager' => $promanager,'plan' => $plan,'equipcat' => $equipcat,'empPic'=>$empPic, 'client'=>$client,'company'=>$company]);
-        }
+    }
 
-        public function getCompanyDetails(Request $req){
-          $type = DB::table('client_tbl')->join('client_rep_tbl as cr','cr.cl_no','=','client_tbl.cl_no')
-          ->where('client_tbl.cl_no',$req->cl_no)->get();
-          return response()->json($type);
-        }
+    public function getCompanyDetails(Request $req){
+      $type = DB::table('client_tbl')->join('client_rep_tbl as cr','cr.cl_no','=','client_tbl.cl_no')
+      ->where('client_tbl.cl_no',$req->cl_no)->get();
+      return response()->json($type);
+    }
 
-        public function getClientDetails(Request $req){
-          $type = DB::table('client_rep_tbl')->where('cr_no',$req->cr_no)->get();
-          return response()->json($type);
-        }
+    public function getClientDetails(Request $req){
+      $type = DB::table('client_rep_tbl')->where('cr_no',$req->cr_no)->get();
+      return response()->json($type);
+    }
 
-        public function getEquipList(Request $req){
-          $type = DB::table('equipment_info_tbl')->where('ec_id',$req->equiptype_id)->where('ei_status','=','Available')->get();
-          return response()->json($type);
-        }
+    public function getEquipList(Request $req){
+      $type = DB::table('equipment_info_tbl')->where('ec_id',$req->equiptype_id)->where('ei_status','=','Available')->get();
+      return response()->json($type);
+    }
 
-        public function getEquipDetails(Request $req){
-          $type = DB::table('equipment_info_tbl')->where('ei_id',$req->ei_id)->get();
-          return response()->json($type);
-        }
+    public function getEquipDetails(Request $req){
+      $type = DB::table('equipment_info_tbl')->where('ei_id',$req->ei_id)->get();
+      return response()->json($type);
+    }
 
-        public function getTaskDetails(Request $req){
-          $type = DB::table('task_tbl')->where('task_id',$req->task_id)
-          ->where('task_delete',0)->get();
-          return response()->json($type);
-        }
+    public function getTaskDetails(Request $req){
+      $type = DB::table('task_tbl')->where('task_id',$req->task_id)
+      ->where('task_delete',0)->get();
+      return response()->json($type);
+    }
 
-        public function addproject(){
-          /*$this->validate(request(),[
-            'company-name' => 'required|max:100',
-            'company-email' => 'required',
-            'company-phone' => 'required|min:5',
-            'company-address' => 'required|max:500',
-            'client_fname' => 'required|max:50',
-            'client_lname' => 'required|max:50',
-            'client_address' => 'required|max:200',
-            'client_email' => 'required',
-            'client_phone' => 'required|min:5',
-            'client_position' => 'required',
-            'contract-total' => 'required',
-            'contract-title' => 'required|max:500',
-            'contract-date' => 'required',
-            'contract-signedby' => 'required|max:100',
-            'contract-type' => 'required',
-            'project-start-date' => 'required',
-            'project-end-date' => 'required',
-            'start_date' => 'required',
-            'total_days' => 'required',
-            'project-name' => 'required|max:200',
-            'project-desc' => 'required|max:500',
-            'project-manager' => 'required',
-            'construction-site' => 'required|max:200',
-            'floor-no' => 'required',
-            'floor-area' => 'required',
-            'road-length' => 'required',
-            'road-type' => 'required',
-            'project-start-date' => 'required',
-            'project-end-date' => 'required',
-          ]);*/
-          $cidesc = "";
-          $phaseid = 0;
-          $cb_total = 0;
-          $task_cost = 0;
-          $pt_percentage = 0;
+    public function addproject(){
+    /*$this->validate(request(),[
+          'company-name' => 'required|max:100',
+          'company-email' => 'required',
+          'company-phone' => 'required|min:5',
+          'company-address' => 'required|max:500',
+          'client_fname' => 'required|max:50',
+          'client_lname' => 'required|max:50',
+          'client_address' => 'required|max:200',
+          'client_email' => 'required',
+          'client_phone' => 'required|min:5',
+          'client_position' => 'required',
+          'contract-total' => 'required',
+          'contract-title' => 'required|max:500',
+          'contract-date' => 'required',
+          'contract-signedby' => 'required|max:100',
+          'contract-type' => 'required',
+          'project-start-date' => 'required',
+          'project-end-date' => 'required',
+          'start_date' => 'required',
+          'total_days' => 'required',
+          'project-name' => 'required|max:200',
+          'project-desc' => 'required|max:500',
+          'project-manager' => 'required',
+          'construction-site' => 'required|max:200',
+          'floor-no' => 'required',
+          'floor-area' => 'required',
+          'road-length' => 'required',
+          'road-type' => 'required',
+          'project-start-date' => 'required',
+          'project-end-date' => 'required',
+        ]);*/
+        $cidesc = "";
+        $phaseid = 0;
+        $cb_total = 0;
+        $task_cost = 0;
+        $pt_percentage = 0;
+        $existCompany = $_POST['company'];
+
+        if($existCompany == "others"){
           $cl_no = DB::table('client_tbl')->insertGetId([
             'cl_company' => $_POST['company-name'],
             'cl_email' => $_POST['company-email'],
             'cl_contact' => $_POST['company-phone'],
             'cl_address' => $_POST['company-address'],
-    ], 'cl_no');//cl
+            ], 'cl_no');//cl
           DB::table('client_rep_tbl')->insert([
-            'cr_first_name' => $_POST['client_fname'],
-            'cr_last_name' => $_POST['client_lname'],
-            'cr_address' => $_POST['client_address'],
-            'cr_email' => $_POST['client_email'],
-            'cr_contact' => $_POST['client_phone'],
-            'cr_position' => $_POST['client_position'],
+            'cr_first_name' => $_POST['client-name'],
+            'cr_email' => $_POST['client-email'],
+            'cr_contact' => $_POST['client-phone'],
+            'cr_position' => $_POST['client-position'],
             'cl_no' => $cl_no,
-          ]);//DB
-          $cb_id = DB::table('contract_bill_tbl')->insertGetId([
-            'cb_total' => $_POST['contract-total'],
-            'cb_paid' => $_POST['contract-paid'],
-            'cb_budget' => $_POST['contract-total'],
-            'cb_budget_left' => $_POST['contract-total'],
-            'cb_balance' => $_POST['contract-balance'],
-            'cb_delete' => 0,
+                  ]);//DB
+        }else{
+          $cl_no = $existCompany;
+        }// if else exist
+        $cb_id = DB::table('contract_bill_tbl')->insertGetId([
+          'cb_total' => $_POST['contract-total'],
+          'cb_paid' => $_POST['contract-paid'],
+          'cb_budget' => $_POST['contract-total'],
+          'cb_budget_left' => $_POST['contract-total'],
+          'cb_balance' => $_POST['contract-balance'],
+          'cb_delete' => 0,
     ], 'cb_id');//DB
-          $ci_no = DB::table('contract_info_tbl')->insertGetId([
-            'ci_date' => $_POST['contract-date'],
-            'cl_no' => $cl_no,
-            'ci_desc' => $_POST['contract-type'],
-            'cb_id' => $cb_id,
-            'ci_delete' => 0,
+        $ci_no = DB::table('contract_info_tbl')->insertGetId([
+          'ci_date' => $_POST['contract-date'],
+          'cl_no' => $cl_no,
+          'ci_desc' => $_POST['contract-type'],
+          'cb_id' => $cb_id,
+          'ci_delete' => 0,
     ], 'ci_no');//DB
-          $proj_no = DB::table('project_tbl')->insertGetId([
-            'proj_start_date' => $_POST['project-start-date'],
-            'proj_end_date' => $_POST['project-end-date'],
-            'proj_created_date' => date_create('now'),
-            'proj_complete_date' => date_create('now'),
-            'ci_no' => $ci_no,
+        $proj_no = DB::table('project_tbl')->insertGetId([
+          'proj_start_date' => $_POST['project-start-date'],
+          'proj_end_date' => $_POST['project-end-date'],
+          'proj_created_date' => date_create('now'),
+          'proj_complete_date' => date_create('now'),
+          'ci_no' => $ci_no,
     ], 'proj_no');//DB
-          DB::table('proj_percentage_history_tbl')->insert([
-            'proj_no' => $proj_no,
-            'pph_percentage_added' => 0,
-            'pph_percentage' => 0,
-            'pph_date' => $_POST['project-start-date'],
-            'pph_delete' => 0,
+        DB::table('proj_percentage_history_tbl')->insert([
+          'proj_no' => $proj_no,
+          'pph_percentage_added' => 0,
+          'pph_percentage' => 0,
+          'pph_date' => $_POST['project-start-date'],
+          'pph_delete' => 0,
     ]);//DB
-          DB::table('payment_tbl')->insert([
-            'payment_refno' => 'PYMNT'.time(),
-            'payment_amount' => $_POST['contract-paid'],
-            'payment_date' => date_create('now'),
-            'proj_no' => $proj_no,
-            'payment_delete' => 0,
+        DB::table('payment_tbl')->insert([
+          'payment_refno' => 'PYMNT'.time(),
+          'payment_amount' => $_POST['contract-paid'],
+          'payment_date' => date_create('now'),
+          'proj_no' => $proj_no,
+          'payment_delete' => 0,
 	]);//DB
-          DB::table('invoice_tbl')->insert([
-            'invoice_no' => '0',
-            'invoice_date' => date_create('now'),
-            'invoice_due' => date_create('now'),
-            'invoice_amount' => $_POST['contract-paid'],
-            'proj_percentage' => 15,
-            'proj_accpercentage' => 15,
-            'proj_no' => $proj_no,
-            'invoice_status' =>'Paid',
-            'invoice_delete' => 0,
+        DB::table('invoice_tbl')->insert([
+          'invoice_no' => '0',
+          'invoice_date' => date_create('now'),
+          'invoice_due' => date_create('now'),
+          'invoice_amount' => $_POST['contract-paid'],
+          'proj_percentage' => 15,
+          'proj_accpercentage' => 15,
+          'proj_no' => $proj_no,
+          'invoice_status' =>'Paid',
+          'invoice_delete' => 0,
     ]);//insert invoice_tbl
 	//*/
-          $nophase = $_POST['planphase'];
-          $planid = $_POST['planid'];
-          $planquantity = $_POST['planquantity'];
-          $planprice = $_POST['planprice'];
-          for ($x = 0; $x < count($nophase) ; $x++) {
+        $nophase = $_POST['planphase'];
+        $planid = $_POST['planid'];
+        $planquantity = $_POST['planquantity'];
+        $planprice = $_POST['planprice'];
+        for ($x = 0; $x < count($nophase) ; $x++) {
           //echo '11111COUNT $planid ='.$planid[$x].' nophase ='.$nophase[$x].' $x='.$x.' < $count='.count($nophase).'COUNT11111<br>';
-            if($x == count($nophase)-1){
-              $pp_id = DB::table('project_phase_tbl')->insertGetId([
-                'phase_id' => $nophase[$x],
-                'proj_no' => $proj_no,
-                'pp_start_date' => $_POST['project-start-date'],
-                'pp_end_date' => '1111-11-11',
-                'pp_delete' => 0,
+          if($x == count($nophase)-1){
+            $pp_id = DB::table('project_phase_tbl')->insertGetId([
+              'phase_id' => $nophase[$x],
+              'proj_no' => $proj_no,
+              'pp_start_date' => $_POST['project-start-date'],
+              'pp_end_date' => '1111-11-11',
+              'pp_delete' => 0,
             ],'pp_id');//DB
             //echo '<br>!!!!!LAST you SAVE phase='.$nophase[$x].' $x='.$x.'LAST!!!!!<br>';
-              for ($p = 0; $p < count($nophase) ; $p++) {
-                if ($nophase[$x] == $nophase[$p]){
-                  $bill = DB::table('contract_bill_tbl as cb')->where('cb_id',$cb_id)->get();
-                  $task_cost = $planprice[$p];
-                  foreach($bill as $bill){
-                    $ptp = $task_cost / $bill->cb_total;
-                    $pt_percentage = $ptp * 100;
+            for ($p = 0; $p < count($nophase) ; $p++) {
+              if ($nophase[$x] == $nophase[$p]){
+                $bill = DB::table('contract_bill_tbl as cb')->where('cb_id',$cb_id)->get();
+                $task_cost = $planprice[$p];
+                foreach($bill as $bill){
+                  $ptp = $task_cost / $bill->cb_total;
+                  $pt_percentage = $ptp * 100;
                 }//foreach
                 DB::table('project_task_tbl')->insert([
                   'task_id' => $planid[$p],

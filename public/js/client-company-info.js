@@ -1,4 +1,9 @@
 $(document).ready(function () {
+  $("#client-name, #client-position, #client-phone, #client-email, #company-phone, #company-name, #company-address, #company-email")
+  .on('change', function () {
+    
+  });
+
   // Fill up the form according to client dropdown
   $('#company').on('change', function () {
     if($(this).val() != 'others' && $(this).val() != null){
