@@ -147,8 +147,7 @@ if it's not present, don't show loader *
 					             	<li>
 					               		 <a ><i class="fa fa-wrench" ></i>Maintenance<span class="fa fa-chevron-down"></span> </a>
 					               		 <ul class="nav child_menu">
-					                  		<li><a href="{{ url ('client') }}">Client</a></li>
-						                  	<li><a href="{{ url ('company') }}">Company</a></li>
+						                  	<li><a href="{{ url ('company') }}"> Client Company</a></li>
 						                  	<li><a href="{{ url ('engineer') }}">Employee</a></li>
 						                  	<li><a href="{{ url ('phase') }}">Phases</a></li>
 						                  	<li><a href="{{ url ('tasks') }}">Tasks</a></li>
@@ -195,6 +194,13 @@ if it's not present, don't show loader *
 							                <li><a href="{{ url ('equipment_util') }}">Equipment Utilization</a></li>
 							             </ul>
 							         </li>
+						            <li>
+						              <a ><i class="fa fa-question-circle-o jumbo"></i>Queries<span class="fa fa-chevron-down"></span></a>
+						              <ul class="nav child_menu">
+						                <li><a href="{{ url ('queryEmployee') }}">Employee</a></li>
+                							<li><a href="{{ url ('queryClient') }}">Client Company</a></li>
+						              </ul>
+						            </li>
 				          		</ul>
 				        		</div>
 				      </div>
@@ -499,14 +505,7 @@ if it's not present, don't show loader *
 																<a href="/approvetimeextreq?id={{$ter->ter_id}}"><button class="btn btn-success btn-sm" style="width:48%;" data-toggle="tooltip" data-placement="left" title="Approve Request"><i class="fa fa-check"></i></button></a>
 																<a href="/rejecttimeextreq?id={{$ter->ter_id}}"><button class="btn btn-danger btn-sm" style="width:48%;" data-toggle="tooltip" data-placement="right" title="Reject Request"><i class="fa fa-close"></i></button></a>
 																<a href="/pdftimeextreq?id={{$ter->ter_id}}"><button class="btn btn-primary btn-sm" style="width:100%;" data-toggle="tooltip" data-placement="left" title="Download Time Extension Request Letter"><i class="fa fa-file-pdf-o"></i></button></a>
-															</div>
-															@elseif($ter->ter_status == ' Waiting')
-															<div class="btn-group">
-																<a href="/approvetimeextreq?id={{$ter->ter_id}}"><button class="btn btn-success btn-sm" style="width:48%;" data-toggle="tooltip" data-placement="left" title="Approve Request"><i class="fa fa-check"></i></button></a>
-																<a href="/rejecttimeextreq?id={{$ter->ter_id}}"><button class="btn btn-danger btn-sm" style="width:48%;" data-toggle="tooltip" data-placement="right" title="Reject Request"><i class="fa fa-close"></i></button></a>
-																<a href="/pdftimeextreq?id={{$ter->ter_id}}"><button class="btn btn-primary btn-sm" style="width:100%;" data-toggle="tooltip" data-placement="left" title="Download Time Extension Request Letter"><i class="fa fa-file-pdf-o"></i></button></a>
-															</div>
-															@else
+															</div>@else
 															<a href="/files/time extension request/{{$ter->ter_no}}.pdf" download><button class="btn btn-primary btn-sm" style="width:100%;" data-toggle="tooltip" data-placement="left" title="Download Time Extension Request Letter"><i class="fa fa-file-pdf-o"></i></button></a>
 															@endif
 														</td>
@@ -560,14 +559,14 @@ if it's not present, don't show loader *
 							</div>
 							</div>
 								
-							<!--<div class="col-md-4 col-sm-4 col-xs-8">
+							<div class="col-md-4 col-sm-4 col-xs-8">
 								<div class="x_panel">
 									<div class="x_title">
 										<h2 style="font-size: 2em;">Task Status</h2>
 										<div class="clearfix"></div>
 									</div>
 									<div class="x_content well" style="padding:20px">
-										<!--<h2 class="StepTitle" style="text-align:left; margin-bottom: 25px;"><strong>Project Manager</strong></h2>
+										<h2 class="StepTitle" style="text-align:left; margin-bottom: 25px;"><strong>Project Manager</strong></h2>
 										<h4><strong>Name:</strong> {{$proj->emp_first_name}} {{$proj->emp_last_name}}</h4>
 										<h4><strong>Job Title:</strong> {{$proj->el_position}}</h4>
 										<h4><strong>Email:</strong> {{$proj->emp_email}}</h4>
@@ -598,14 +597,9 @@ if it's not present, don't show loader *
 										<div class="form-group">
 											<div class="col-md-12 col-sm-12 col-xs-24 " style="width:100%;">
 												<a href="/monthlyreport?id={{$proj->proj_no}}"><button class="btn btn-success" style="margin-top: 13px; width:100%">Monthly Report</button></a>
-												@foreach($nvc as $nvc)
-												@if(date("m",strtotime($nvc->invoice_date))== date("m",strtotime("now")) || $proj->proj_percentage <= 15)
-												@break
-												@else
-												<button type="submit" data-id="{{$proj->proj_no}}" class="btn btn-success addinvoice" style="margin-top: 13px; width:100%">Sent an Invoice</button>
-												@break
-												@endif	
-												@endforeach
+												
+												<button type="submit" data-id="{{$proj->proj_no}}" class="btn btn-success addinvoice" style="margin-top: 13px; width:100%">Create an Invoice</button>
+									
 												@if ($proj->proj_status == 'Closed')
 												<a href="/openproject?id={{$proj->proj_no}}"><button class="btn btn-success" style="margin-top: 13px; width:100%">Open Project</button></a>
 												@else
@@ -616,7 +610,7 @@ if it's not present, don't show loader *
 										@endforeach
 									</div>
 								</div>
-							</div>-->
+							</div>
 							
 							<div class="col-md-4 col-sm-4 col-xs-8" style="float:right;">
 				<div class="x_panel ">
@@ -1322,42 +1316,46 @@ if it's not present, don't show loader *
 					<div class="modal-content">
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-							<h4 class="modal-title" id="myModalLabel">Add Invoice</h4>
+							<h4 class="modal-title" id="myModalLabel">Create Invoice</h4>
 						</div>
 						<div class="modal-body">
 							<form method="post" action="/invoice">
 								{{csrf_field()}}
 								<input type="hidden" id="proj_no" name="proj_no">
 
-								<div class="col-md-8 col-sm-8 col-xs-16 form-group has-feedback" style="margin-top:2%;">
+								<div class="col-md-8 col-sm-8 col-xs-16 form-group has-feedback" style="margin-top:2%;" id="divprojname">
 									<label> Project Title </label>
-									<input value="{{$proj->pi_title}}" type="text" class="form-control has-feedback-left" id="project-name" name="project-name" placeholder="Project Name" required>
+									<input value="" type="text" class="form-control has-feedback-left" id="project-name" name="project-name" placeholder="Project Name" required>
 									<span class="fa fa-building form-control-feedback left" aria-hidden="true"></span>
 								</div>
 
-								<div class="col-md-4 col-sm-4 col-xs-8 form-group has-feedback" style="margin-top:2%;">
+								<div class="col-md-4 col-sm-4 col-xs-8 form-group has-feedback" style="margin-top:2%;" id="divprojno">
 									<label> Project ID </label>
-									<input value="{{$proj->proj_no}}" style="text-align: right;" type="text" id="project-id" class="form-control col-md-7 col-xs-12" name="project-id" placeholder="1"  readonly>
+									<input value="" style="text-align: right;" type="text" id="project-id" class="form-control col-md-7 col-xs-12" name="project-id" placeholder=""  readonly>
 									<span class=" form-control-feedback left" aria-hidden="true" style="color:#000; margin-top: 5px;">ID</span>
 								</div>
 								
-								<div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+								<div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback" id="divprojdate">
 									<label> Invoce Due Date: </label>
-									<input type="date" class="form-control" id="nvoice_due" name="invoice_due" required="required" >
+									<input type="date" class="form-control" id="invoice_due" name="invoice_due" required="required" >
 									<span class="fa fa-calendar form-control-feedback right" aria-hidden="true"></span>
 								</div>
 
 
-								<div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">					
+								<div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback" id="divnote">					
 									<p class="text-muted well well-sm no-shadow" style="margin-top: 5px;">
 										It is suggested to request a payment at the end of the month.
 									</p>
 								</div>
+								
+								<div id="alert" class="alert alert-error col-md-12 col-sm-12 col-xs-24" style="display:none">
+								</div>
 
 							</div>
 							<div class="modal-footer"style="margin-top: 0%">
-								<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-								<button type="submit" class="btn btn-success">Add Invoice</button>
+								<button type="button" class="btn btn-default" id ="divcancel" data-dismiss="modal">Cancel</button>
+								<button type="button" class="btn btn-default" id ="divOK" data-dismiss="modal" style="display:none; margin-left:46%">OK</button>
+								<button type="submit" class="btn btn-success" id="divadd" >Add Invoice</button>
 							</div>
 						</form>
 					</div>
@@ -1404,8 +1402,8 @@ if it's not present, don't show loader *
 											<div>
 												<select class="form-control"  id="invoice_status" name="invoice_status">
 													<option value="default" disabled >Payment Status</option>
-													<option value="Waiting">Waiting</option>
 													<option value="Paid">Paid</option>
+													<option value="Unpaid">Unpaid</option>
 												</select>
 											</div>
 										</div>
@@ -1484,6 +1482,11 @@ if it's not present, don't show loader *
 
 	// Get data for addInvoice Modal
 	$('.addinvoice').click(function () {
+	var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+var firstDay = new Date(y, m, 1);
+var lastDay = new Date(y, m + 1, 0);
+var curdate = new Date();
+var lastDay = "<?php  $lastday = date('m',strtotime('today')).'/'.date('t',strtotime('today')).'/'.date('Y',strtotime('today')); echo $lastdayformat = date('jS',strtotime($lastday)).' day of '.date('F Y.',strtotime($lastday))?>";
 		$.ajax
 		({
 			type : "get",
@@ -1495,6 +1498,21 @@ if it's not present, don't show loader *
 					$('#addInvoice #proj_no').val(data.proj_no);
 					$('#addInvoice #project-id').val(data.proj_no);
 					$('#addInvoice #project-name').val(data.pi_title);
+					var indate = new Date(data.invoice_date);
+					if (indate.getMonth() == curdate.getMonth()) {
+						 document.getElementById('alert').style.display = "block";
+						 document.getElementById('divprojname').style.display = "none";
+						 document.getElementById('divprojno').style.display = "none";
+						 document.getElementById('divprojdate').style.display = "none";
+						 document.getElementById('divnote').style.display = "none";
+						 document.getElementById('divcancel').style.display = "none";
+						 document.getElementById('divadd').style.display = "none";
+						 document.getElementById('divOK').style.display = "block";
+						$('#addInvoice #alert').text("It is suggested to request a payment at the end of the month. Next billing is scheduled on " + lastDay );
+					} else {
+						 document.getElementById('alert').style.display = "none";
+						$('#addInvoice #alert').text("It is suggested to request a payment at the end of the month. Next billing is scheduled on " + lastDay );
+					}
 				})
 			}
 		});
@@ -1619,7 +1637,7 @@ if it's not present, don't show loader *
 			paynotif.click();
 		}
 
-		if(invoicestatus.value == "Sent" ) {
+		if(invoicestatus.value == "Unpaid" ) {
 
 			PNotify.removeAll();
 		}
@@ -1632,7 +1650,7 @@ if it's not present, don't show loader *
 		var paymentreceipt= document.getElementById("invoice_receipt");
 		
 		paymentreceipt.style.display = paymentstatus.value == "Paid" ? "block" : "none";
-		paymentreceipt.style.display = paymentstatus.value == "Sent" ? "none" : "block";
+		paymentreceipt.style.display = paymentstatus.value == "Unpaid" ? "none" : "block";
 
 		function readURL1(input) {
 			if (input.files && input.files[0]) {

@@ -1,7 +1,6 @@
 @extends('layouts.dashboardAM') 
 @section('page_title','Project Add') 
 @section('page_content')
-
 <div class="">
   <div class="clearfix"></div>
   <div class="row">
@@ -14,6 +13,8 @@
         <div class="x_content">
           <form method="post" action="/addproject" id="project_form" data-parsley-validate="">
             {{ csrf_field() }}
+
+            <h2><span style="color:red;">NOTE: ALL FIELDS ARE REQUIRED</span></h2><br/>
 
             <h2 class="StepTitle" style="text-align:center; ">Company Information</h2>
             <p><span style="font-weight: bold">Instruction:</span> Select Company Name and if its not yet on the record, select others and fill up the form.</p>
@@ -30,17 +31,13 @@
                 </select>
               </div>         
               <div class="col-md-6 col-sm-12 col-12 text-left form-field field-wrapper">
-                <label for="client-name">Contact Person</label>
-                <input type="text" class="form-control" id="client-name" name="client-name" placeholder="Contact Person" data-parsley-required="" data-parsley-required-message="Contact Person is required" readonly=""/>
+                <label for="company-name">Company Name</label>
+                <input type="text" class="form-control" id="company-name" name="company-name" placeholder="Company Name" data-parsley-required="" data-parsley-required-message="Company Name is required" readonly=""/>
               </div>    
             </div>
 
-            <div class="form-group row">
-              <div class="col-md-6 col-sm-12 col-12 text-left form-field field-wrapper">
-                <label for="company-name">Company Name</label>
-                <input type="text" class="form-control" id="company-name" name="company-name" placeholder="Company Name" data-parsley-required="" data-parsley-required-message="Company Name is required" readonly=""/>
-              </div>            
-              <div class="col-md-6 col-sm-12 col-12 text-left form-field field-wrapper">
+            <div class="form-group row">      
+              <div class="col-md-12 col-sm-24 col-24 text-left form-field field-wrapper">
                 <label for="company-address">Company Address</label>
                 <input type="text" class="form-control" id="company-address" name="company-address" placeholder="Company Address" data-parsley-required="" data-parsley-required-message="Company Address is required" readonly=""/>
               </div>          
@@ -56,6 +53,32 @@
                 <input type="email" class="form-control" id="company-email" name="company-email" placeholder="Company Email" data-parsley-required="" data-parsley-required-message="Company Email is required" readonly=""/>
               </div>          
             </div>
+            
+            <br/><h4 class="StepTitle" style="text-align:center; ">Contact Person Information</h4>
+            
+            <div class="form-group row">
+              <div class="col-md-6 col-sm-12 col-12 text-left form-field field-wrapper">
+                <label for="client-name">Full Name</label>
+                <input type="text" class="form-control" id="client-name" name="client-name" placeholder="Full Name" data-parsley-required="" data-parsley-required-message="Full Name is required" readonly=""/>
+              </div>          
+              <div class="col-md-6 col-sm-12 col-12 text-left form-field field-wrapper">
+                <label for="client-position">Position</label>
+                <input type="text" class="form-control" id="client-position" name="client-position" placeholder="Position" data-parsley-required="" data-parsley-required-message="Contact Person Position is required" readonly=""/>
+              </div>          
+            </div>
+
+            <div class="form-group row">
+              <div class="col-md-6 col-sm-12 col-12 text-left form-field field-wrapper">
+                <label for="client-phone">Contact Number</label>
+                <input type="text" class="form-control" id="client-phone" name="client-phone" placeholder="Contact Number" data-parsley-required="" data-parsley-required-message="Contact Number is required" readonly=""/>
+              </div>            
+              <div class="col-md-6 col-sm-12 col-12 text-left form-field field-wrapper">
+                <label for="client-email">Email</label>
+                <input type="email" class="form-control" id="client-email" name="client-email" placeholder="Email" data-parsley-required="" data-parsley-required-message="Email is required" readonly=""/>
+              </div>          
+            </div>
+
+            
 
             <br/>
             <hr/>
@@ -218,7 +241,7 @@
                   <a  data-toggle="modal" data-target="#addEquipment"><button type="button" class="button" ><i class="fa fa-plus"></i> &nbsp Add Equipment</button></a>
                 </div>
               </div>
-              <button type="submit" class="btn btn-success" id="submit" style="width:100%">Submit</button>
+              <button type="submit" class="btn btn-success" id="submit" style="margin-top:10%;width:100%">Submit</button>
             </div>
           </form>
         </div>

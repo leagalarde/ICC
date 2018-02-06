@@ -29,22 +29,22 @@
                     @if(!empty($invoice))
                       @foreach($invoice as $invoice)
                       <tr>
-                        <td>{{$invoice->pi_title}}</td>
+                        <td>{{$invoice->ci_name}}</td>
                         <td>{{$invoice->invoice_amount}}</td>
                         <td>{{$invoice->invoice_due}}</td>
                         <td>
-                          <!--button type="button" class="btn @if(strtotime($invoice->invoice_due) < strtotime('now') && $invoice->invoice_status == 'Sent') btn-danger 
+                          <!--button type="button" class="btn @if(strtotime($invoice->invoice_due) < strtotime('now') && $invoice->invoice_status == 'Unpaid') btn-danger 
                                                            @elseif($invoice->invoice_status=='Paid') btn-success 
                                                            @else btn-warning 
-                                                           @endif btn-xs">@if(strtotime($invoice->invoice_due) < strtotime("now") &&$invoice->invoice_status=='Sent') Delayed 
+                                                           @endif btn-xs">@if(strtotime($invoice->invoice_due) < strtotime("now") &&$invoice->invoice_status=='Unpaid') Delayed 
                                                                           @else {$invoice1->invoice_status}
                                                                           @endif
                           </button-->
-                          <span class="label @if(strtotime($invoice->invoice_due) < strtotime('now') && $invoice->invoice_status == 'Sent') label-danger 
+                          <span class="label @if(strtotime($invoice->invoice_due) < strtotime('now') && $invoice->invoice_status == 'Unpaid') label-danger 
                                              @elseif($invoice->invoice_status=='Paid') label-success 
                                              @else label-warning 
                                              @endif" style="font-size: 1em;">
-                            @if(strtotime($invoice->invoice_due) < strtotime("now") &&$invoice->invoice_status=='Sent') Delayed 
+                            @if(strtotime($invoice->invoice_due) < strtotime("now") &&$invoice->invoice_status=='Unpaid') Delayed 
                             @else {{$invoice->invoice_status}} 
                             @endif
                           </span>
@@ -137,8 +137,8 @@
                   </div>
                   <div class="col-md-4 col-sm-4 col-xs-8 tile_stats_count">
                     <span class="count_top"><i class="fa fa-calendar"></i> Remaining</span>
-                    @if(date_diff(date_create("now"),date_create($proj->proj_end_date))->format('%r%a days') > 0)<div class="count green">@else<div class="count red">@endif<strong>@php echo date_diff(date_create("now"),date_create($proj->proj_end_date))->format('%r%a days') @endphp CD</strong></div>
-                 </div>
+                    <div class="count text-green"><strong>@php echo date_diff(date_create("now"),date_create($proj->proj_end_date))->format('%r%a days') @endphp CD</strong></div>
+                  </div>
                   <div class="col-md-4 col-sm-4 col-xs-8 tile_stats_count" >
                     <span class="count_top"><i class="fa fa-calendar"></i> DEADLINE</span>
                     <div class="count"><strong>{{$proj->proj_end_date}}</strong></div>

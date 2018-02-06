@@ -9,6 +9,8 @@ label {
     transition: all 0.1s linear;
     opacity: 0;
     font-weight:bold;
+    padding-top: 5px;
+    padding-bottom: 0px;
 }
 label.on {
     /*color: #4481C4;*/
