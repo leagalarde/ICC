@@ -241,7 +241,7 @@
                   <a  data-toggle="modal" data-target="#addEquipment"><button type="button" class="button" ><i class="fa fa-plus"></i> &nbsp Add Equipment</button></a>
                 </div>
               </div>
-              <button type="submit" class="btn btn-success" id="submit" style="margin-top:10%;width:100%">Submit</button>
+              <button type="submit" class="btn btn-success" id="submit" onclick="" style="margin-top:10%;width:100%">Submit</button>
             </div>
           </form>
         </div>
@@ -258,7 +258,7 @@
             <form class="form-horizontal form-label-left input_mask">
               <div class="modal-body">
 
-                <div class="col-md-6 col-sm-6 col-xs-12" style="margin-bottom: 5%;">
+                <div class="col-md-6 col-sm-6 col-xs-12">
                   <label>Equipment Type</label>
                   <select class="form-control" id="select_equiptype">
                     <option value="default" selected disabled>Select Equipment Type</option>
@@ -268,7 +268,7 @@
                   </select>
                 </div>
 
-                <div class="col-md-6 col-sm-6 col-xs-12" style="margin-bottom: 5%;" >
+                <div class="col-md-6 col-sm-6 col-xs-12">
                   <label>Equipment Description</label>
                   <select class="form-control" id="select_equip">
                     <option value="" selected disabled>Equipment Description</option>
@@ -296,17 +296,17 @@
                 </div>
 
                 <div class="form-group row">
-                  <div id="road-lengthh" class="col-md-6 col-sm-12 col-12 text-left form-field field-wrapper" style="">
+                  <div class="col-md-6 col-sm-12 col-12 text-left form-field field-wrapper" style="">
                     <label for="start-date">Start Date</label>
                     <input type="text" class="form-control" id="start-date" placeholder="Start Date" data-parsley-required="" data-parsley-required-message="Start Date is required" onchange="checker()"/>
                   </div>            
-                  <div id="road-typee" class="col-md-6 col-sm-12 col-12 text-left form-field field-wrapper" style="">
+                  <div class="col-md-6 col-sm-12 col-12 text-left form-field field-wrapper" style="">
                     <label for="total-days">Total Day</label>
                     <input type="text" class="form-control" id="total-days" placeholder="Total Day" data-parsley-required="" data-parsley-required-message="Total Day is required" />
                   </div>          
                 </div>            
               </div>
-              <div class="modal-footer" style="margin-top: 30%;" >
+              <div class="modal-footer" style="margin-top: 5%;" >
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-success" id="add_equipment" data-dismiss="modal" >Add Equipment</button>
               </div>
