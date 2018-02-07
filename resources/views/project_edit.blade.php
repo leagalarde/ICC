@@ -1373,7 +1373,7 @@ if it's not present, don't show loader *
 							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 							<h4 class="modal-title" id="myModalLabel">Invoice Details</h4>
 						</div>
-						<div class="modal-body" 
+						<div class="modal-body" >
 							<form method="post" action="/editprojinvoice">
 								{{csrf_field()}}
 								
@@ -1421,12 +1421,12 @@ if it's not present, don't show loader *
 										</div>
 								</div>
 
-								<div class="form-group col-md-6 col-sm-6 col-xs-24" id="invoice_receipt" style="display:none;">
+								<div class="form-group col-md-6 col-sm-6 col-xs-24" id="invoice_receipt" >
 									<label>Payment Receipt</label>
 									<div class="input-field col s6" style="text-align:center; margin-top:-4px;">
 										<img id="blah1" src="/images/payment/payment.jpg" alt="your image" style="width:100%;"/>
 										<div style="text-align:center; margin-top:10px; margin-left:30px;">
-											<input type='file' onchange="readURL1(this);" name="payment_image" id="payment_image"/>
+											<input type='file' onchange="readURL1(this);" name="payment_image" id="payment_image" style="margin-left: 18%"/>
 										</div>
 									</div>
 									<input type="hidden" class="inpImage" id="image" name="image">
@@ -1646,11 +1646,11 @@ var lastDay = "<?php  $lastday = date('m',strtotime('today')).'/'.date('t',strto
 			PNotify.removeAll();
 		}
 
-		var paymentstatus= document.getElementById("invoice_status");
+	/*	var paymentstatus= document.getElementById("invoice_status");
 		var paymentreceipt= document.getElementById("invoice_receipt");
 		
 		paymentreceipt.style.display = paymentstatus.value == "Paid" ? "block" : "none";
-		paymentreceipt.style.display = paymentstatus.value == "Unpaid" ? "none" : "block";
+		paymentreceipt.style.display = paymentstatus.value == "Unpaid" ? "none" : "block";*/
 
 		function readURL1(input) {
 			if (input.files && input.files[0]) {
