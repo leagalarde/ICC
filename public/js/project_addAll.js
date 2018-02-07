@@ -77,7 +77,7 @@ $(function (){
 $(document).ready(function() {
 
 	// Validate client-phone (INT)
-	$('#client_phone').keypress(function(eve) {
+	$('#client-phone').keypress(function(eve) {
 		if ((eve.which != 46 || $(this).val().indexOf('.') != -1) && (eve.which < 48 || eve.which > 57) || (eve.which == 46 && $(this).caret().start == 0) ) {
       eve.preventDefault();
     }

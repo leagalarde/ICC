@@ -177,11 +177,11 @@
                   </select>
                 </div>
                 <div class="col-md-3 col-sm-6 col-6 text-left form-field field-wrapper">
-                  <label for="construction-date">Start Date</label>
+                  <label for="start">Start Date</label>
                   <input type="text" class="form-control" id="start" name="project-start-date" onchange="checker()" placeholder="Start Date" data-parsley-required="" data-parsley-required-message="Start date is required"/>
                 </div>
                 <div class="col-md-3 col-sm-6 col-6 text-left form-field field-wrapper">
-                  <label for="construction-date">End Date</label>
+                  <label for="end">End Date</label>
                   <input type="text" class="form-control" id="end" name="project-end-date" onchange="checker()" placeholder="End Date" data-parsley-required="" data-parsley-required-message="End date is required"/>              
                 </div>
               </div>            
@@ -246,75 +246,6 @@
           </form>
         </div>
       </div>
-
-
-      <!--ADD MEMBER Modal -->
-      <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              <h4 class="modal-title" id="myModalLabel">Add Member</h4>
-            </div>
-            <div class="modal-body">
-              <form class="form-horizontal form-label-left input_mask">
-                <div style="margin-left:27%; margin-bottom:10px;">
-                  <img src="images/user.png" class="image" alt="Avatar" style="margin-bottom:10px;">
-                  <input type="file" id="profile_image">
-                </div>
-
-                <div class="form-group col-md-12 col-sm-12 col-xs-24" style="margin-left:25%;">
-                  <div class="col-md-6 col-sm-6 col-xs-12">
-                    <label>Employee ID</label>
-                    <select class="form-control">
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                      <option>4</option>
-                      <option>5</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="col-md-4 col-sm-4 col-xs-8 form-group has-feedback">
-                  <input type="text" class="form-control has-feedback-left" id="first-name" required="required" placeholder="First Name">
-                  <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
-                </div>
-
-                <div class="col-md-4 col-sm-4 col-xs-8 form-group has-feedback">
-                  <input type="text" class="form-control has-feedback-left" id="middle-name" required="required" placeholder="Middle Name">
-                  <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
-                </div>
-
-                <div class="col-md-4 col-sm-4 col-xs-8 form-group has-feedback">
-                  <input type="text" class="form-control" id="last-name" required="required" placeholder="Last Name">
-                  <span class="fa fa-user form-control-feedback right" aria-hidden="true"></span>
-                </div>
-
-                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-                  <label>Department</label>
-                  <input type="text" class="form-control" id="department" required="required" placeholder="Department">
-                  <span class="fa fa-buiding form-control-feedback right" aria-hidden="true"></span>
-                </div>
-
-                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-                  <label>Position</label>
-                  <input type="text" class="form-control has-feedback-left" id="position" required="required" placeholder="...">
-                  <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
-                </div>
-
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                  <button type="button" class="btn btn-success">Add</button>
-                </div>
-              </form>
-            </div>
-          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-      </div>
-      <!-- /.modal -->
 
       <!--ADD EQUIPMENT Modal -->
       <div class="modal fade" id="addEquipment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
