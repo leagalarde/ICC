@@ -35,6 +35,9 @@
   <link href="../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
   <!-- bootstrap-daterangepicker -->
   <link href="../vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+  
+  <!-- W3 Css -->
+  <link rel="stylesheet" href="css/w3.css">
 
   <!-- Custom Theme Style -->
   <link href="../build/css/construction.css" rel="stylesheet">
