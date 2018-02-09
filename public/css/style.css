@@ -40,7 +40,7 @@ input, button {
   opacity: 2;
   position: relative;
   height: 100%;
-  background-image:url("megalopolis.jpg");
+  background-image:url("../images/BG2.jpg");
   background-size: cover;
   overflow: auto;
   font-family: "Open Sans", Helvetica, Arial, sans-serif;

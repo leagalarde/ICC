@@ -1,4 +1,13 @@
 $(document).ready(function($) {
+  $('#project_form').submit(function() {
+    var rowCount = $('#bill tr').length;
+    var rowCount2 = $('#equipment_table tr').length;
+    if (rowCount < 2 || rowCount2 < 2){
+      alert('Contract Detail and Equipment Information are required');
+      return false;
+    }
+  });
+
   $("#start-date").datepicker({
     dateFormat: "yy-mm-dd",
     autoclose: true, 
@@ -29,6 +38,7 @@ function checker(){
   $("#contract-date,#start,#end,#start-date")
   .bind("checkval", function (){
     var label = $(this).prev("label");
+    console.log($(this));
     if (this.value !== ""){
       label.addClass(showClass);
     }else{
@@ -77,7 +87,7 @@ $(function (){
 $(document).ready(function() {
 
 	// Validate client-phone (INT)
-	$('#client_phone').keypress(function(eve) {
+	$('#client-phone').keypress(function(eve) {
 		if ((eve.which != 46 || $(this).val().indexOf('.') != -1) && (eve.which < 48 || eve.which > 57) || (eve.which == 46 && $(this).caret().start == 0) ) {
       eve.preventDefault();
     }
