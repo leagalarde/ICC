@@ -246,6 +246,8 @@ Route::get('/PM_project_edit', 'PMController@ProjectEdit');
 
 Route::post('/editPMproject', 'PMController@editPMproject');
 
+Route::post('/editProjRemarks', 'PMController@editprojremarks');
+
 Route::get('/getClientCompany', 'PMController@getClientCompany');
 
 Route::post('/editClientCompany', 'PMController@editClientCompany');
@@ -255,6 +257,8 @@ Route::get('/getAdminClientCompany', 'AdminController@getClientCompany');
 Route::post('/editAdminClientCompany', 'AdminController@editClientCompany');
 
 Route::get('/updatenotif', 'PMController@updatenotif');
+
+Route::get('/getalltask', 'PMController@getalltask');
 
 Route::get('/getProjectTask', 'PMController@getProjectTask');
 

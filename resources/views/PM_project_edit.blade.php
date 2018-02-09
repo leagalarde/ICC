@@ -5,7 +5,7 @@
 <div class="">
   <div class="clearfix"></div>
   <div class="row">
-    <div class="col-md-12 col-sm-12 col-xs-24">
+    <div class="col-md-8 col-sm-8 col-xs-24">
       <div class="x_panel">
         <div class="x_title">
           <h1>Project Details</h1>
@@ -89,13 +89,54 @@
         </div>
       </div>
     </div>
+	
+	  <div class="col-md-4 col-xs-12">
+      <div class="x_panel ">
+        <div class="x_title">
+          <h2>Remarks <small>Information</small></h2>
+          <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+          <!-- start form for validation -->
+          <form method="post" class="form-horizontal form-label-left input_mask" action="/editProjRemarks" data-parsley-validate>
+            {{csrf_field()}}
+            <div class="form-group col-md-12 col-sm-12 col-xs-24">
+              <p class="text-muted font-13 m-b-30" style="margin-bottom:3%;">
+                Information entered here will be shown on "Project Status Monthly Report".  Please update your remarks monthly.
+              </p>
+              <input type="hidden" value="{{$proj->proj_no}}" name="proj_no">
+              <textarea class="resizable_textarea form-control" name-="project-remarks" id="project-remarks" name="project-remarks" rows="15" cols="50" required >{{$proj->pi_remarks}}</textarea>
+            </div>
+            <br/>
+            <div class="ln_solid" style="margin-top: 40%;"></div>
+            <div class="form-group">
+              <div class="col-md-12 col-sm-12 col-xs-24 " style=" margin-bottom:5px;">
+                <button type="submit" class="btn btn-success" style="width:100%">Update Project Remarks</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+	
   </div>
+  
 
   <div class="row">
     <div class="col-md-8 col-xs-16">
       <div class="x_panel">
         <div class="x_title">
           <h2>Project Tasks</h2>
+          <ul class="nav navbar-right panel_toolbox" style="margin-right: -3%">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a class="editingrid" data-id="{{$proj->proj_no}}">Edit in Grid</a></li>
+                <li><a href="#">Settings 2</a></li>
+              </ul>
+            </li>
+          </ul>
           <div class="clearfix"></div>
         </div>
         <div class="x_content">
@@ -237,7 +278,7 @@
           <div class="ln_solid" style="margin-top: 8%;"></div>
           <div class="form-group">
             <div class="col-md-12 col-sm-12 col-xs-24 " style="width:100%;">
-              <button type="submit" id="editclient" data-id="{{$proj->proj_no}}" class="btn btn-success" style="width:100%">Edit Project Details</button>  
+              <button type="submit" id="editclient" data-id="{{$proj->proj_no}}" class="btn btn-success" style="width:100%">Edit Client Informations</button>  
               <a href="/previewcontract?id={{$proj->proj_no}}"><button class="btn btn-success" style="margin-top: 13px; width:100%">Preview Contract</button></a>
               <a href="/PM_monthlyreport?id={{$proj->proj_no}}"><button class="btn btn-success" style="margin-top: 13px; width:100%">Monthly Report</button></a>
               @if ($proj->proj_status == 'Closed')
@@ -389,34 +430,6 @@
       </div>
     </div>
                     
-    <div class="col-md-8 col-xs-16">
-      <div class="x_panel ">
-        <div class="x_title">
-          <h2>Remarks <small>Information</small></h2>
-          <div class="clearfix"></div>
-        </div>
-        <div class="x_content">
-          <!-- start form for validation -->
-          <form method="post" class="form-horizontal form-label-left input_mask" action="/editProjRemarks" data-parsley-validate>
-            {{csrf_field()}}
-            <div class="form-group col-md-12 col-sm-12 col-xs-24">
-              <p class="text-muted font-13 m-b-30" style="margin-bottom:3%;">
-                Information entered here will be shown on "Project Status Monthly Report".  Please update your remarks monthly.
-              </p>
-              <input type="hidden" value="{{$proj->proj_no}}" name="proj_no">
-              <textarea class="resizable_textarea form-control" name-="project-remarks" id="project-remarks" name="project-remarks" rows="8" cols="50" required >{{$proj->pi_remarks}}</textarea>
-            </div>
-            <br/>
-            <div class="ln_solid" style="margin-top: 40%;"></div>
-            <div class="form-group">
-              <div class="col-md-12 col-sm-12 col-xs-24 " style=" margin-bottom:5px;">
-                <button type="submit" class="btn btn-success" style="width:100%">Update Project Remarks</button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
               
     <div class="col-md-4 col-sm-4 col-xs-8" style="float:right;">
       <div class="x_panel ">
@@ -615,6 +628,46 @@
             <!-- /.modal-dialog -->
         </div>
         <!-- /.modal -->
+		
+		<div class="modal fade" id="editAllTask" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+            <div class="modal-dialog"  style="width:90%">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Project Tasks</h4>
+                    </div>
+                    <div class="modal-body">
+						<form method="post" action="/editProjectMilestone">
+						{{csrf_field()}}
+						<table id="alltasktable" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+				            <thead style="background-color: #353959; color:#ffffff;">
+				              <tr>
+					                <th width="25%">Task Description</th>
+					                <th width="10%" style="text-align:center">Milestone</th>
+					                <th>Complete %</th>
+					                <th>Status</th>
+					                <th>Start Date</th>
+					                <th>End Date</th>
+					                <!--th>Password</th-->
+				              </tr>
+				            </thead>
+				            <tbody>
+				            </tbody>
+				       </table>
+						
+                    </div>
+					<div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success">Save</button>
+                    </div>
+					</form>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+		
 
 
 	<div class="modal fade" id="editClient" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
@@ -1397,6 +1450,32 @@
         });
         $('#editMilestone').modal('show');
 	});
+	
+	$('.editingrid').click(function () {
+	$('#alltasktable').html('');
+	var tableheader = '<thead style="background-color: #353959; color:#ffffff;"><tr><th width="25%">Task Description</th><th width="10%" style="text-align:center">Milestone</th><th width="10%">Complete %</th> <th>Status</th><th>Start Date</th><th>End Date</th></tr></thead>';
+	$('#alltasktable').append(tableheader);  
+	
+        $.ajax
+        ({
+            type : "get",
+            url : '/getalltask',
+            data : {"id" : $(this).data('id')},
+            dataType: "json",
+            success: function(response) {
+                response.forEach(function(data){
+	                    var path 		= "/images/profile/" + data.emp_image;
+						var name 	= data.emp_first_name + ' ' + data.emp_middle_initial + ' ' + data.emp_last_name;
+						var col12 	= '<tr><td style="font-weight:normal">' + data.task_description + '</td><td style="font-weight:normal; text-align:center">' + data.phase_title+ '</td>';
+						var col3      = '<td><select class="form-control" id="select_taskpercent" name="select_taskpercent" style="font-weight:normal;"><option value="0">0%</option><option value="10">10%</option><option value="20">20%</option><option value="30">30%</option> <option value="40">40%</option><option value="50">50%</option> <option value="60">60%</option><option value="70">70%</option><option value="80">80%</option><option value="90">90%</option><option value="100">100%</option></select></td></tr>';
+							var row = col12 + col3;
+					$('#alltasktable').append(row);   
+                })
+            }
+        });
+        $('#editAllTask').modal('show');
+	});
+	
       $('#notif').click(function () {
 		$.ajax
         ({

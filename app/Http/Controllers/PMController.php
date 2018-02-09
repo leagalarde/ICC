@@ -552,6 +552,13 @@ class PMController extends Controller
 			$id = $_POST['project-id'];
         return redirect('/PM_project_edit?id='.$id);
     }
+	
+	public function editprojremarks(){
+        DB::table('project_tbl')->join('project_info_tbl as pi','project_tbl.proj_no','=','pi.proj_no')->where('project_tbl.proj_no',$_POST['proj_no'])->update([
+            'pi_remarks' => $_POST['project-remarks'],
+            ]);
+        return back();
+    }
 
 	public function getClientCompany(Request $req){
         $type = DB::table('project_tbl as pr')->where('pr.proj_no',$req->id)
@@ -582,6 +589,14 @@ class PMController extends Controller
             'cl_contact' => $_POST['company-phone'],
             ]);
         return back();
+    }
+	
+	public function getalltask(Request $req){
+        $type = DB::table('project_task_tbl as pt')->where('pt.proj_no',$req->id)
+			->join('task_tbl','task_tbl.task_id','=','pt.task_id')
+			->join('project_phase_tbl as pp','pp.pp_id','=','pt.pp_id')
+			->join('phase_tbl','phase_tbl.phase_id','=','pp.phase_id')->get();
+		return response()->json($type);
     }
 
 	public function getProjectTask(Request $req){
