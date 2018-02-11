@@ -14,8 +14,9 @@ $(document).ready(function () {
       dataType: "json",
       success: function (response) {
         response.forEach(function (data) {
-          option += '<option value="' + data.ei_id + '">' + data.ei_manufacturer + ' ' + data.ei_serial_model_plate + '</option>';
+          option += '<option value="' + data.ei_capacity_qty + ' ' + data.ei_capacity_unit + '">' + data.ei_capacity_qty + ' ' + data.ei_capacity_unit + '</option>';
           // console.log(data.ei_manufacturer);
+          $("#equip_left").text("0 "+data.ec_category);
         })
         $('#select_equip').append(option);
       }
@@ -24,34 +25,37 @@ $(document).ready(function () {
 
   // Fill up the form according to select_equip dropdown
   $('#select_equip').on('change', function () {
+    $('#quantity').val("");
+    $('#equip-capacity').val($('#select_equip').val());
     $.ajax({
-      type: 'get',
+      type: "get",
       url: '/getEquipDetails',
       data: {
-        'ei_id': $(this).val()
+        "ec_id": $('#select_equiptype').val(),
+        "capacity": $('#select_equip').val(),
       },
       dataType: "json",
       success: function (response) {
         response.forEach(function (data) {
-          // console.log(data.ei_manufacturer);
-          var capacity = data.ei_capacity_qty + ' ' + data.ei_capacity_unit;
-          $('#addEquipment .equipment-id').val(data.ei_id);
-          $('#addEquipment .manufacturer-name').val(data.ei_manufacturer);
-          $('#addEquipment .serial-model').val(data.ei_serial_model_plate);
-          $('#addEquipment .equip-capacity').val(capacity);
-          // console.log($(this).val());
-          $("#manufacturer-name,#serial-model,#equip-capacity")
-          .bind("checkval", function (){
-            var label = $(this).prev("label");
-            label.addClass(showClass);
-          }).on("keyup", function (){
-            $(this).trigger("checkval");
-          }).on("focus", function (){
-            $(this).prev("label").addClass(onClass);
-          }).on("blur", function (){
-            $(this).prev("label").removeClass(onClass);
-          }).trigger("checkval");
+          $("#equip-category").val(data.ec_category);
+          $("#equip_left").text(data.count+" "+data.ec_category);
+          $("#equip-qty").val(data.count);
+          var ec_id = $("#ec_id").val();
+          for(x=0;x>ec_id.length;x++){
+            console.log("hi"+ec_id[x]);
+          }
+          //for(x=0;x<e)
         })
+        $('#quantity').on('keyup', function(e){
+          //console.log($(this).val() +">"+ $("#equip-qty").val());
+          if ($(this).val() > $("#equip-qty").val() 
+            && e.keyCode != 46
+            && e.keyCode != 8
+            ) {
+           e.preventDefault();     
+         $(this).val($("#equip-qty").val());
+       }
+     });
       }
     });
   });
@@ -59,11 +63,13 @@ $(document).ready(function () {
   // Add equipment to HTML table
   $('#add_equipment').click(function () {
     document.getElementById("submit").disabled = false;
-    var new_eiid = document.getElementById("equipment-id").value;
-    var new_equipfull = document.getElementById("manufacturer-name").value + " " + document.getElementById("serial-model").value;
+    var new_ecid = document.getElementById("select_equiptype").value;
+    //var new_equipfull = document.getElementById("manufacturer-name").value + " " + document.getElementById("serial-model").value;
+    var new_equipcategory = document.getElementById("equip-category").value;
     var new_equipcapacity = document.getElementById("equip-capacity").value;
     var new_date = document.getElementById("start-date").value;
     var new_total_days = document.getElementById("total-days").value;
+    var new_quantity = document.getElementById("quantity").value;
     var new_name = $('#select_equiptype')
     .find(':selected')
     .attr('data-name');
@@ -73,44 +79,47 @@ $(document).ready(function () {
     //console.log('total_days=' + new_total_days);
     if (new_name == undefined) {
       alert('Select Equipment Type');
-    } else if (new_eiid == '') {
+    } else if (new_ecid == '') {
       alert('Select Equipment Description');
     } else if (new_date == '') {
       alert('Select Start date');
     } else if (new_total_days == '' || new_total_days == 0) {
       alert('Total Days must not be equal to 0 or must not be blank');
-    } else {
+    } else if (new_quantity == '' || new_quantity == 0) {
+      alert('Quantity must not be equal to 0 or must not be blank');
+    }else {
       $("#equipment_table")
-      .append('<tr><td><input type="hidden" name="ei_id[]" value="' + new_eiid + '"/>' + new_eiid + '</td><td>' + new_name + " " + new_equipfull + '</td><td>' + new_equipcapacity +
-        '</td><td><input type="hidden" name="start_date[]" value="' + new_date + '"/>' + new_date + '</td><td><input type="hidden" name="total_days[]" value="' + new_total_days + '"/>' + new_total_days +
-        '</td><td> <a  class="btn btn-danger btn-xs" onclick="delete_equipment( this )"><i class="fa fa-trash-o"></i> Remove </a></td></tr>');
+      .append('<tr><td><input type="text" id="ec_id[]" name="ec_id[]" value="' + new_ecid + '"/>' + new_ecid + 
+        '</td><td><input type="hidden" name="category[]" value="' + new_equipcategory + '"/>' + new_equipcategory +
+        '</td><td><input type="text" id="ei_capacity[]" name="capacity[]" value="' + new_equipcapacity + '"/>' + new_equipcapacity +
+        '</td><td><input type="hidden" name="start_date[]" value="' + new_date + '"/>' + new_date + 
+        '</td><td><input type="hidden" name="total_days[]" value="' + new_total_days + '"/>' + new_total_days +
+        '</td><td><input type="hidden" name="quantity[]" value="' + new_quantity + '"/>' + new_quantity + '</td><td> <a  class="btn btn-danger btn-xs" onclick="delete_equipment( this )"><i class="fa fa-trash-o"></i> Remove </a></td></tr>');
 
-      document.getElementById("equipment-id").value = "";
-      document.getElementById("manufacturer-name").value = "";
-      document.getElementById("serial-model").value = "";
+      document.getElementById("select_equiptype").value = "";
+      //document.getElementById("manufacturer-name").value = "";
+      //document.getElementById("serial-model").value = "";
       document.getElementById("equip-capacity").value = "";
       document.getElementById("start-date").value = "";
       document.getElementById("total-days").value = "";
+      document.getElementById("quantity").value = "";
 
       $('#select_equip').empty();
       $('#select_equip').append('<option value="" selected disabled>Equipment Description</option>');
       $('#select_equiptype option[value="default"]').prop('selected', true);
 
-      $("#manufacturer-name,#serial-model,#equip-capacity")
-      .bind("checkval", function (){
-        var label = $(this).prev("label");
-        if (this.value != ""){
-          label.addClass(showClass);
-        }else{
-          label.removeClass(showClass);
+      $.ajax({
+        type: "get",
+        url: '/getEquipDetails',
+        data: {
+          "ec_id": $('#select_equiptype').val(),
+          "capacity": $('#select_equip').val(),
+        },
+        dataType: "json",
+        success: function (response) {
+         
         }
-      }).on("keyup", function (){
-        $(this).trigger("checkval");
-      }).on("focus", function (){
-        $(this).prev("label").addClass(onClass);
-      }).on("blur", function (){
-        $(this).prev("label").removeClass(onClass);
-      }).trigger("checkval")
+      });
     } //
   });
 });

@@ -864,12 +864,23 @@ class AdminController extends Controller
     }
 
     public function getEquipList(Request $req){
-      $type = DB::table('equipment_info_tbl')->where('ec_id',$req->equiptype_id)->where('ei_status','=','Available')->get();
+      $query = 'SELECT DISTINCT ei_capacity_qty, ei_capacity_unit, ec_category 
+                FROM `equipment_info_tbl` as ei
+                JOIN `equipment_category` as ec ON ei.ec_id = ec.ec_id 
+                WHERE ei.ec_id = '.$req->equiptype_id.' AND ei_status = "Available"';
+      $type = DB::select($query);
+      //$type = DB::table('equipment_info_tbl')->distinct()->select('ei_capacity_qty,ei_capacity_unit')->where('ec_id',$req->equiptype_id)->get();
       return response()->json($type);
     }
 
     public function getEquipDetails(Request $req){
-      $type = DB::table('equipment_info_tbl')->where('ei_id',$req->ei_id)->get();
+      $query = 'SELECT COUNT(ei_capacity_qty) as "count",ec.ec_id, ec_category 
+      FROM `equipment_info_tbl` as ei
+      JOIN `equipment_category` as ec ON ei.ec_id = ec.ec_id
+      WHERE ec.ec_id = '.$req->ec_id.'  AND ei_status = "Available" AND 
+      CONCAT(ei_capacity_qty," ",ei_capacity_unit) = "'.$req->capacity.'"
+      GROUP BY ec_id, ec_category';
+      $type = DB::select($query);
       return response()->json($type);
     }
 
@@ -1172,9 +1183,9 @@ class AdminController extends Controller
    // DB::table('contract_info_tbl')->where('ci_no',$ci_no)->update([
     //  'ci_delete' => 1,
     //]);
-    DB::table('contract_bill_tbl')->where('cb_id',$cb_id)->update([
-      'cb_delete' => 1
-    ]);
+    //DB::table('contract_bill_tbl')->where('cb_id',$cb_id)->update([
+    //  'cb_delete' => 1
+    //]);
     //DB::table('client_tbl')->where('cl_no',$cl_no)->update([
     //  'cl_delete' => 1
     //]);
