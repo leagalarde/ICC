@@ -1,9 +1,10 @@
 $(document).ready(function($) {
-  $('#project_form').submit(function() {
+  $('#project_form').submit(function(e) {
     var rowCount = $('#bill tr').length;
     var rowCount2 = $('#equipment_table tr').length;
     if (rowCount < 2 || rowCount2 < 2){
       alert('Contract Detail and Equipment Information are required');
+      e.preventDefault();
       return false;
     }
   });

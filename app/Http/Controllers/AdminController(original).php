@@ -1169,18 +1169,18 @@ class AdminController extends Controller
     DB::table('project_tbl')->where('proj_no',$proj_no)->update([
       'deleted' => 1,
     ]);
-    DB::table('contract_info_tbl')->where('ci_no',$ci_no)->update([
-      'ci_delete' => 1,
-    ]);
+   // DB::table('contract_info_tbl')->where('ci_no',$ci_no)->update([
+    //  'ci_delete' => 1,
+    //]);
     DB::table('contract_bill_tbl')->where('cb_id',$cb_id)->update([
       'cb_delete' => 1
     ]);
-    DB::table('client_tbl')->where('cl_no',$cl_no)->update([
-      'cl_delete' => 1
-    ]);
-    DB::table('client_rep_tbl')->where('cr_id',$cr_id)->update([
-      'cr_delete' => 1
-    ]);
+    //DB::table('client_tbl')->where('cl_no',$cl_no)->update([
+    //  'cl_delete' => 1
+    //]);
+    //DB::table('client_rep_tbl')->where('cr_id',$cr_id)->update([
+    //  'cr_delete' => 1
+    //]);
     
     DB::table('equipment_info_tbl')->where('ei_id',$ei_id)->update([
       'ei_status' => 'Available'
