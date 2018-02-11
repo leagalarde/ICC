@@ -852,6 +852,23 @@ class AdminController extends Controller
       //return view('index',['id' => $id, 'notif' => $notif, 'notifcount' => $notifcount, 'promanager' => $promanager,'plan' => $plan,'equipcat' => $equipcat,'empPic'=>$empPic, 'client'=>$client,'company'=>$company]);
     }
 
+    public function EquipmentPending(){
+      $ecid = $_POST['ec_id'];
+      echo "hey".$ecid;
+      $qty = $_POST['quantity'];
+      for ($x = 0; $x < count($ecid) ; $x++) {
+        $query = 'SELECT  ec_id, ei_status 
+        FROM `equipment_info_tbl`  
+        WHERE ec_id = '.$ecid.' AND ei_status = "Available"
+        ORDER BY ei_id ASC
+        LIMIT '.$qty.'';
+        DB::select($query)->update([
+          'ei_status' => 'Pending',
+        ]);//DB
+      }//for
+      return back();
+    }
+
     public function getCompanyDetails(Request $req){
       $type = DB::table('client_tbl')->join('client_rep_tbl as cr','cr.cl_no','=','client_tbl.cl_no')
       ->where('client_tbl.cl_no',$req->cl_no)->get();
@@ -865,9 +882,9 @@ class AdminController extends Controller
 
     public function getEquipList(Request $req){
       $query = 'SELECT DISTINCT ei_capacity_qty, ei_capacity_unit, ec_category 
-                FROM `equipment_info_tbl` as ei
-                JOIN `equipment_category` as ec ON ei.ec_id = ec.ec_id 
-                WHERE ei.ec_id = '.$req->equiptype_id.' AND ei_status = "Available"';
+      FROM `equipment_info_tbl` as ei
+      JOIN `equipment_category` as ec ON ei.ec_id = ec.ec_id 
+      WHERE ei.ec_id = '.$req->equiptype_id.' AND ei_status = "Available"';
       $type = DB::select($query);
       //$type = DB::table('equipment_info_tbl')->distinct()->select('ei_capacity_qty,ei_capacity_unit')->where('ec_id',$req->equiptype_id)->get();
       return response()->json($type);

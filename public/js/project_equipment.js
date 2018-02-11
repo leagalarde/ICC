@@ -40,10 +40,6 @@ $(document).ready(function () {
           $("#equip-category").val(data.ec_category);
           $("#equip_left").text(data.count+" "+data.ec_category);
           $("#equip-qty").val(data.count);
-          var ec_id = $("#ec_id").val();
-          for(x=0;x>ec_id.length;x++){
-            console.log("hi"+ec_id[x]);
-          }
           //for(x=0;x<e)
         })
         $('#quantity').on('keyup', function(e){
@@ -89,12 +85,12 @@ $(document).ready(function () {
       alert('Quantity must not be equal to 0 or must not be blank');
     }else {
       $("#equipment_table")
-      .append('<tr><td><input type="text" id="ec_id[]" name="ec_id[]" value="' + new_ecid + '"/>' + new_ecid + 
+      .append('<tr><td><input type="hidden" id="ec_id" name="ec_id[]" value="' + new_ecid + '"/>' + new_ecid + 
         '</td><td><input type="hidden" name="category[]" value="' + new_equipcategory + '"/>' + new_equipcategory +
-        '</td><td><input type="text" id="ei_capacity[]" name="capacity[]" value="' + new_equipcapacity + '"/>' + new_equipcapacity +
+        '</td><td><input type="hidden" id="ei_capacity[]" name="capacity[]" value="' + new_equipcapacity + '"/>' + new_equipcapacity +
         '</td><td><input type="hidden" name="start_date[]" value="' + new_date + '"/>' + new_date + 
         '</td><td><input type="hidden" name="total_days[]" value="' + new_total_days + '"/>' + new_total_days +
-        '</td><td><input type="hidden" name="quantity[]" value="' + new_quantity + '"/>' + new_quantity + '</td><td> <a  class="btn btn-danger btn-xs" onclick="delete_equipment( this )"><i class="fa fa-trash-o"></i> Remove </a></td></tr>');
+        '</td><td><input type="hidden" id="ec_quantity" name="quantity[]" value="' + new_quantity + '"/>' + new_quantity + '</td><td> <a  class="btn btn-danger btn-xs" onclick="delete_equipment( this )"><i class="fa fa-trash-o"></i> Remove </a></td></tr>');
 
       document.getElementById("select_equiptype").value = "";
       //document.getElementById("manufacturer-name").value = "";
@@ -107,17 +103,20 @@ $(document).ready(function () {
       $('#select_equip').empty();
       $('#select_equip').append('<option value="" selected disabled>Equipment Description</option>');
       $('#select_equiptype option[value="default"]').prop('selected', true);
-
+      //console.log("hey"+$('#ec_id').val());
       $.ajax({
-        type: "get",
-        url: '/getEquipDetails',
+        type: "post",
+        url: '/EquipmentPending',
+        headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }, 
+        dataType: "json",
+        contentType: 'application/json; charset=utf-8',
         data: {
-          "ec_id": $('#select_equiptype').val(),
-          "capacity": $('#select_equip').val(),
+          "ec_id": $('#ec_id').val(),
+          "quantity": $('#ec_quantity').val(),
         },
         dataType: "json",
         success: function (response) {
-         
+          console.log(response);
         }
       });
     } //
