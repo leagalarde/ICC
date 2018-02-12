@@ -97,7 +97,7 @@
                 </div>            
                 <div class="col-md-6 col-sm-12 col-12 text-left form-field field-wrapper">
                   <label for="contract-date">Contract Date</label>
-                  <input type="text" class="form-control" id="contract-date" name="contract-date" placeholder="Contract Date" data-parsley-required="" data-parsley-required-message="Contract Date is required" onchange="checker()" />
+                  <input type="text" class="form-control" id="contract-date" name="contract-date" placeholder="Contract Date" data-parsley-required="" data-parsley-required-message="Contract Date is required" onchange="checker()" autocomplete="off" />
                 </div>          
               </div>
 
@@ -176,13 +176,14 @@
                     @endforeach
                   </select>
                 </div>
+
                 <div class="col-md-3 col-sm-6 col-6 text-left form-field field-wrapper">
-                  <label for="start">Start Date</label>
-                  <input type="text" class="form-control" id="start" name="project-start-date" onchange="checker()" placeholder="Start Date" data-parsley-required="" data-parsley-required-message="Start date is required"/>
-                </div>
+                  <label for="project-start">Start Date</label>
+                  <input type="text" class="form-control" id="project-start" name="project-start-date" placeholder="Start Date" data-parsley-required="" data-parsley-required-message="Start date is required" onclick="checker()" autocomplete="off" />
+                </div>      
                 <div class="col-md-3 col-sm-6 col-6 text-left form-field field-wrapper">
-                  <label for="end">End Date</label>
-                  <input type="text" class="form-control" id="end" name="project-end-date" onchange="checker()" placeholder="End Date" data-parsley-required="" data-parsley-required-message="End date is required"/>              
+                  <label for="project-end">End Date</label>
+                  <input type="text" class="form-control" id="project-end" name="project-end-date" placeholder="End Date" data-parsley-required="" data-parsley-required-message="End Date is required" onclick="checker()" autocomplete="off" />
                 </div>
               </div>            
 
@@ -221,25 +222,69 @@
               <h2 style="text-align: center"> EQUIPMENT INFORMATION </h2>
               <p><span style="font-weight: bold">Instruction:</span> Add Equipment and fill up all fields.</p>
               <div class="col-md-12 col-sm-12 col-xs-24 form-group has-feedback">
-                <label>Equipments</label>
+
+                <div class="form-group row">
+                  <div class="col-md-6 col-sm-12 col-12 text-left form-field field-wrapper">
+                    <label>Equipment Type</label>
+                    <select class="form-control" id="select_equiptype">
+                      <option value="" selected disabled>Equipment Type</option>
+                      @foreach($equipcat as $equipcat)
+                      <option value="{{$equipcat->ec_id}}" data-name="{{$equipcat->ec_category}}">{{$equipcat->ec_category}}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                  <div class="col-md-3 col-sm-6 col-6 text-left form-field field-wrapper">
+                    <label>Equipment Capacity</label>
+                    <select class="form-control" id="select_equip">
+                      <option value="" selected disabled>Equipment Capacity</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3 col-sm-6 col-6 text-left form-field field-wrapper">
+                    <div>Available equipment left: <span id="equip_left" style="font-size: 25px">0 Equipment</span></div>
+                  </div>
+                  <input type="hidden" class="form-control equip-category" disabled="disabled" id="equip-qty" placeholder="Capacity">
+                  <input type="hidden" class="form-control equip-category" disabled="disabled" id="equip-category" placeholder="Capacity">
+                  <input type="hidden" class="form-control equip-capacity" disabled="disabled" id="equip-capacity" placeholder="Capacity">
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-4 col-sm-8 col-8 text-left form-field field-wrapper" style="">
+                    <label for="quantity">Quantity</label>
+                    <input type="text" class="form-control" id="quantity" placeholder="Quantity" data-parsley-required="" data-parsley-required-message="Quantity is required" />
+                  </div>        
+                  <div class="col-md-4 col-sm-8 col-8 text-left form-field field-wrapper" style="">
+                    <label for="start-date">Start Date</label>
+                    <input type="text" class="form-control" id="start-date" placeholder="Start Date" data-parsley-required="" data-parsley-required-message="Start Date is required" onchange="checker()" autocomplete="off" />
+                  </div>            
+                  <div class="col-md-4 col-sm-8 col-8 text-left form-field field-wrapper" style="">
+                    <label for="total-days">Total Day</label>
+                    <input type="text" class="form-control" id="total-days" placeholder="Total Day" data-parsley-required="" data-parsley-required-message="Total Day is required" />
+                  </div>         
+                </div>
+
+                <div class="modal-footer" style="margin-top: 5%;" >
+                  <button type="button" class="btn btn-success" id="add_equipment" data-dismiss="modal" >Add Equipment</button>
+                </div>
+
+                <br/>
                 <table class="table table-striped dt-responsive nowrap projects" id="equipment_table">
                   <thead style="background-color: #353959; color:#ffffff; font-size: 15px; text-align: left;">
                     <tr>
                       <th style="width: 5%">#</th>
-                      <th style="width: 35%">Equipment</th>
-                      <th style="width: 10%">Capacity</th>
-                      <th style="width: 30%">Start Date</th>
-                      <th style="width: 10%">Total Days</th>
+                      <th style="width: 25%">Equipment</th>
+                      <th style="width: 15%">Capacity</th>
+                      <th style="width: 15%">Start Date</th>
+                      <th style="width: 15%">Total Days</th>
+                      <th style="width: 15%">Quantity</th>
                       <th style="width: 10%">Action</th>
                     </tr>
                   </thead>
                   <tbody style="background-color: #fff; font-size: 14px; text-align: left;">
                   </tbody>
                 </table>
-
-                <div style="margin-right:-4px; margin-top:20px;text-align: center">
+                <hr/>
+                <!--div style="margin-right:-4px; margin-top:20px;text-align: center">
                   <a  data-toggle="modal" data-target="#addEquipment"><button type="button" class="button" ><i class="fa fa-plus"></i> &nbsp Add Equipment</button></a>
-                </div>
+                </div-->
               </div>
               <button type="submit" class="btn btn-success" id="submit" onclick="" style="margin-top:10%;width:100%">Submit</button>
             </div>
@@ -258,15 +303,7 @@
             <form class="form-horizontal form-label-left input_mask">
               <div class="modal-body">
 
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                  <label>Equipment Type</label>
-                  <select class="form-control" id="select_equiptype">
-                    <option value="default" selected disabled>Select Equipment Type</option>
-                    @foreach($equipcat as $equipcat)
-                    <option value="{{$equipcat->ec_id}}" data-name="{{$equipcat->ec_category}}">{{$equipcat->ec_category}}</option>
-                    @endforeach
-                  </select>
-                </div>
+
 
                 <div class="col-md-6 col-sm-6 col-xs-12">
                   <label>Equipment Description</label>
@@ -291,25 +328,15 @@
 
                 <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback" >
                   <label>Capacity</label>
-                  <input type="text" class="form-control equip-capacity" disabled="disabled" id="equip-capacity" required="required" placeholder="Capacity">
+                  
                   <span class="fa fa-asterisk form-control-feedback right" aria-hidden="true"></span>
                 </div>
 
                 <div class="form-group row">
-                  <div class="col-md-6 col-sm-12 col-12 text-left form-field field-wrapper" style="">
-                    <label for="start-date">Start Date</label>
-                    <input type="text" class="form-control" id="start-date" placeholder="Start Date" data-parsley-required="" data-parsley-required-message="Start Date is required" onchange="checker()"/>
-                  </div>            
-                  <div class="col-md-6 col-sm-12 col-12 text-left form-field field-wrapper" style="">
-                    <label for="total-days">Total Day</label>
-                    <input type="text" class="form-control" id="total-days" placeholder="Total Day" data-parsley-required="" data-parsley-required-message="Total Day is required" />
-                  </div>          
+
                 </div>            
               </div>
-              <div class="modal-footer" style="margin-top: 5%;" >
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-success" id="add_equipment" data-dismiss="modal" >Add Equipment</button>
-              </div>
+              
             </form>
             <!-- /.modal-content -->
           </div>

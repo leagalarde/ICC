@@ -1,9 +1,10 @@
 $(document).ready(function($) {
-  $('#project_form').submit(function() {
+  $('#project_form').submit(function(e) {
     var rowCount = $('#bill tr').length;
     var rowCount2 = $('#equipment_table tr').length;
     if (rowCount < 2 || rowCount2 < 2){
       alert('Contract Detail and Equipment Information are required');
+      e.preventDefault();
       return false;
     }
   });
@@ -16,16 +17,15 @@ $(document).ready(function($) {
     dateFormat: "yy-mm-dd",
     autoclose: true, 
   });       
-  $( "#start, #end" ).datepicker({
+  $( "#project-start, #project-end" ).datepicker({
     dateFormat: "yy-mm-dd",
     numberOfMonths: 2,
     onSelect: function( selectedDate ) {
-      if(this.id == 'start'){
-        var dateMin = $('#start').datepicker("getDate");
-        var rMin = new Date(dateMin.getFullYear(), dateMin.getMonth(),dateMin.getDate() + 1); 
-        $('#end').datepicker("option","minDate",rMin);
+      if(this.id == 'project-start'){
+        var dateMin = $('#project-start').datepicker("getDate");
+        var rMin = new Date(dateMin.getFullYear(), dateMin.getMonth(),dateMin.getDate() + 3); 
+        $('#project-end').datepicker("option","minDate",rMin);
       }
-
     }
   });
 });
@@ -35,16 +35,16 @@ var onClass = "on";
 var showClass = "show";
 
 function checker(){
-  $("#contract-date,#start,#end,#start-date")
+  $("#contract-date,#start-date,#project-start,#project-end")
   .bind("checkval", function (){
     var label = $(this).prev("label");
-    console.log($(this));
+    //console.log($(this));
     if (this.value !== ""){
       label.addClass(showClass);
     }else{
       label.removeClass(showClass);
     }//if else
-  }).on("keyup", function (){
+  }).on("click", function (){
     $(this).trigger("checkval");
   }).on("focus", function (){
     $(this).prev("label").addClass(onClass);
@@ -109,6 +109,12 @@ $(document).ready(function() {
 
     // Validate company-phone (INT)
     $('#total-days').keypress(function(eve) {
+      if ((eve.which != 46 || $(this).val().indexOf('.') != -1) && (eve.which < 48 || eve.which > 57) || (eve.which == 46 && $(this).caret().start == 0) ) {
+        eve.preventDefault();
+      }
+    });
+
+    $('#quantity').keypress(function(eve) {
       if ((eve.which != 46 || $(this).val().indexOf('.') != -1) && (eve.which < 48 || eve.which > 57) || (eve.which == 46 && $(this).caret().start == 0) ) {
         eve.preventDefault();
       }

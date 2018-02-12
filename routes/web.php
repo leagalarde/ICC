@@ -103,6 +103,8 @@ Route::post('/deletetask', 'AdminController@deletetask');
 /* project_add */
 Route::get('/project_add', 'AdminController@Projectadd');
 
+Route::post('/EquipmentPending', 'AdminController@EquipmentPending');
+
 Route::get('/getEquipList', 'AdminController@getEquipList');
 
 Route::get('/getEquipDetails', 'AdminController@getEquipDetails');
