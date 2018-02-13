@@ -598,6 +598,11 @@ class PMController extends Controller
 			->join('phase_tbl','phase_tbl.phase_id','=','pp.phase_id')->get();
 		return response()->json($type);
     }
+	
+	public function editalltask(){
+		$startdate = $_POST['task_stadate'];
+        return back();
+    }
 
 	public function getProjectTask(Request $req){
         $type = DB::table('project_task_tbl as pt')->where('pt.pt_id',$req->id)

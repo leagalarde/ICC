@@ -637,7 +637,7 @@
                         <h4 class="modal-title" id="myModalLabel">Project Tasks</h4>
                     </div>
                     <div class="modal-body">
-						<form method="post" action="/editProjectMilestone">
+						<form method="post" action="/editAllTask">
 						{{csrf_field()}}
 						<table id="alltasktable" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
 				            <thead style="background-color: #353959; color:#ffffff;">
@@ -1453,9 +1453,9 @@
 	
 	$('.editingrid').click(function () {
 	$('#alltasktable').html('');
-	var tableheader = '<thead style="background-color: #353959; color:#ffffff;"><tr><th width="25%">Task Description</th><th width="10%" style="text-align:center">Milestone</th><th width="10%">Complete %</th><th width="10%">Start Date</th><th>End Date</th></tr></thead>';
+	var tableheader = '<thead style="background-color: #353959; color:#ffffff;"><tr><th width="25%">Task Description</th><th width="10%" style="text-align:center">Milestone</th><th width="10%">Complete %</th><th width="10%">Start Date</th><th width="10%">End Date</th></tr></thead>';
 	$('#alltasktable').append(tableheader);  
-	
+	var option ='';
         $.ajax
         ({
             type : "get",
@@ -1464,12 +1464,22 @@
             dataType: "json",
             success: function(response) {
                 response.forEach(function(data){
+						for(i=0; i <=100; i+=10) {
+							if (data.pt_percentage == i) {
+								option += '<option value="'+ data.pt_percentage +'" selected >' + data.pt_percentage + '%</option>'
+							}
+							else {
+								
+								option += '<option value="'+ data.pt_percentage +'" >' + data.pt_percentage + '%</option>'
+							}
+						}
 	                    var path 		= "/images/profile/" + data.emp_image;
 						var name 	= data.emp_first_name + ' ' + data.emp_middle_initial + ' ' + data.emp_last_name;
 						var col12 	= '<tr><td style="font-weight:normal">' + data.task_description + '</td><td style="font-weight:normal; text-align:center">' + data.phase_title+ '</td>';
-						var col3      = '<td><select class="form-control" id="select_taskpercent" name="select_taskpercent" style="font-weight:normal;"><option value="0">0%</option><option value="10">10%</option><option value="20">20%</option><option value="30">30%</option> <option value="40">40%</option><option value="50">50%</option> <option value="60">60%</option><option value="70">70%</option><option value="80">80%</option><option value="90">90%</option><option value="100">100%</option></select></td>';
-						var col4      = '<td><input type="date" class="form-control" name="task_stadate" id="task_stadate" value="' + data.pt_start_date + '" style="padding: 0px 0px 20px 0px; text-align:center; font-weight:normal"></td></tr>';
-						var row = col12 + col3 + col4;
+						var col3      = '<td><select class="form-control" id="select_taskpercent" name="select_taskpercent" style="font-weight:normal;">' + + '</select></td>';
+						var col4      = '<td><input type="date" class="form-control" name="task_stadate[]" id="task_stadate" value="' + data.pt_start_date + '" style="padding: 0px 0px 20px 0px; text-align:center; font-weight:normal"></td>';
+						var col5      = '<td><input type="date" class="form-control" name="task_enddate[]" id="task_enddate" value="' + data.pt_end_date + '" style="padding: 0px 0px 20px 0px; text-align:center; font-weight:normal"></td></tr>';
+						var row = col12 + col3 + col4 + col5;
 					$('#alltasktable').append(row);   
                 })
             }

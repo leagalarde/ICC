@@ -262,6 +262,8 @@ Route::get('/updatenotif', 'PMController@updatenotif');
 
 Route::get('/getalltask', 'PMController@getalltask');
 
+Route::post('/editAllTask', 'PMController@editalltask');
+
 Route::get('/getProjectTask', 'PMController@getProjectTask');
 
 Route::post('/editProjectTask', 'PMController@editProjectTask');
